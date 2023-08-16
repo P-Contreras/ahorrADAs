@@ -1,57 +1,98 @@
 <script src="https://kit.fontawesome.com/1fb5fcdd4a.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+<link rel="stylesheet" href="style.css">
 <title>Ahorradas</title>
 </head>
+
 <body>
 
-<!-- BARRA DE NAVEGACION -->
+    <!-- BARRA DE NAVEGACION -->
 
-<header class="has-shadow">
-<nav class="navbar is-link p-2" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand ml-5">
-        <button class="button is-link navbar-item is-size-3" id="boton-nav-ahorradas">
-            <i class="fas fa-wallet mr-4"></i>
-            <h1 class="is-size-3 has-text-weight-semibold">AhorrADAs</h1>
-        </button>
-        <a role="button" id="menu-hamburguesa" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-    <div class="navbar-menu navbar-end mr-2" id="menu-hamburguesa">
-        <div class="navbar-item has-shadow">
-            <div class="buttons">
-                <button class="button is-link" id="btn-nav-balance">
-                    <span class="icon-text has-text-white">
-                        <span class="icon">
-                            <i class="fas fa-chart-line"></i>
-                        </span>
-                        <span>Balance</span>
-                    </span>
+    <header class="has-shadow">
+        <nav class="navbar is-link p-2" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand ml-5">
+                <button class="button is-link navbar-item is-size-3" id="boton-nav-ahorradas">
+                    <i class="fas fa-wallet mr-4"></i>
+                    <h1 class="is-size-3 has-text-weight-semibold">AhorrADAs</h1>
                 </button>
-                <button class="button is-link" id="btn-nav-categorias">
-                    <span class="icon-text has-text-white">
-                        <span class="icon">
-                            <i class="fas fa-tag"></i>
-                        </span>
-                        <span>Categorías</span>
-                    </span>
-                </button>
-                <button class="button is-link" id="btn-nav-reportes">
-                    <span class="icon-text has-text-white">
-                        <span class="icon">
-                            <i class="fas fa-chart-pie"></i>
-                        </span>
-                        <span>Reportes</span>
-                    </span>
-                </button>
+                <a role="button" id="menu-hamburguesa" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                    data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="navbar-menu navbar-end mr-2" id="menu-hamburguesa">
+                <div class="navbar-item has-shadow">
+                    <div class="buttons">
+                        <button class="button is-link" id="btn-nav-balance">
+                            <span class="icon-text has-text-white">
+                                <span class="icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </span>
+                                <span>Balance</span>
+                            </span>
+                        </button>
+                        <button class="button is-link" id="btn-nav-categorias">
+                            <span class="icon-text has-text-white">
+                                <span class="icon">
+                                    <i class="fas fa-tag"></i>
+                                </span>
+                                <span>Categorías</span>
+                            </span>
+                        </button>
+                        <button class="button is-link" id="btn-nav-reportes">
+                            <span class="icon-text has-text-white">
+                                <span class="icon">
+                                    <i class="fas fa-chart-pie"></i>
+                                </span>
+                                <span>Reportes</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!--Seccion Balance -->
+    <section class="container">
+        <div class="columns is-justify-content-center">
+            <div class="column is-3 mr-3">
+                <div class="column balance mb-5 box">
+                    <h2 class="title is-3 has-text-weight-bold">Balance</h2>
+                </div>
+
+                <div class="column filtros box">
+                    <h4 class="title is-4 has-text-weight-bold">Filtros</h4>
+                </div>
+            </div>
+
+
+            <div class="column operaciones is-7 box">
+                <div class="column">
+                    <div class="is-flex is-justify-content-space-between">
+                    <h4 class="title is-4 has-text-weight-bold">Operaciones</h4>
+
+                    <!-- <div class="buttons"> -->
+                    <button class="button is-primary">+ Nueva Operación</button>
+                    <!-- </div> -->
+                    </div>
+
+                    <div class="is-flex is-flex-direction-column is-align-items-center">
+                        <!-- Imagen inicial -->
+                        <figure class="image wallet">
+                            <img src="./wallet.png">
+                        </figure>
+
+                        <p class="subtitle is-4 has-text-weight-medium">Sin resultados</p>
+                        <p class="subtitle is-size-6">Cambia los filtros o agrega operaciones</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    </div>
-</nav>
-</header>
+    </section>
 
 
 
@@ -59,8 +100,7 @@
 
 
 
-
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
