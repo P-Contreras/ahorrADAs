@@ -11,7 +11,7 @@ body{
 
 
 section{
-    padding-top: 5rem;
+    padding: 5rem 0rem 3rem 0rem;
 }
 
 
@@ -21,15 +21,8 @@ section{
 }
 
 
-.filtros{
-    height: 65vh;
-    /* background-color: bisque; */
-}
-
-
 .operaciones{
     height: 95vh;
-    /* background-color: rgb(121, 121, 143); */
 }
 
 
