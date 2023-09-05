@@ -90,3 +90,14 @@ let categorias = traerCategorias() || [
     nombre: "Trabajo",
     },
 ];
+
+/////////////////// funcion para agregar categorias en el select ///////////////////
+
+const llenarSelect = (categories) => {
+    $$(".select-categorias").forEach((select) => {
+    select.innerHTML = "";
+    for (let { nombre, id } of categories) {
+        select.innerHTML += `<option value="${id}">${nombre}</option>`;
+    }
+    });
+};
