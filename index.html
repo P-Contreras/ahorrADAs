@@ -97,7 +97,7 @@
                         <a class="has-text-link is-hidden">Mostrar filtros</a>
                     </div>
 
-                    <div class="vista" id="contenedor-filtros">
+                    <div id="contenedor-filtros">
                         <div class="field">
                             <label class="label">Tipo</label>
                             <div class="control">
@@ -115,7 +115,7 @@
                             <label class="label">Categoría</label>
                             <div class="control">
                                 <div class="select is-fullwidth">
-                                    <select>
+                                    <select class="select-categorias" id="select-categorias">
                                         <option>Todas</option>
                                     </select>
                                 </div>
@@ -180,7 +180,7 @@
 
     <!-- --seccion CATEGORIAS--- -->
 
-<section class="mt-5 section is-hidden" id="seccion-categorias">
+<section class="mt-5 section is-hidden vista" id="seccion-categorias">
     <div class="container">
         <div class="column is-8-widescreen is-10-desktop is-offset-2-widescreen is-offset-1-desktop">
                 <div class="box">
@@ -338,7 +338,7 @@
                 <label class="label">Categoría</label>
                 <div class="control">
                     <div class="select is-fullwidth">
-                        <select>
+                        <select class="select-categorias" id="">
                             <option>Todas</option>
                         </select>
                     </div>

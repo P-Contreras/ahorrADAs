@@ -53,3 +53,51 @@ const datos = traerDatos() || {
     categorias: [],
     operaciones: [],
 };
+
+/////////////////// funcion random ID ///////////////////
+
+const randomId = () => self.crypto.randomUUID();
+
+/////////////////// funcion para agregar categorias ///////////////////
+
+const traerCategorias = () => {
+    return traerDatos()?.categorias;
+};
+
+let categorias = traerCategorias() || [
+    {
+    id: randomId(),
+    nombre: "Comida",
+    },
+    {
+    id: randomId(),
+    nombre: "Servicios",
+    },
+    {
+    id: randomId(),
+    nombre: "Salidas",
+    },
+    {
+    id: randomId(),
+    nombre: "Transporte",
+    },
+    {
+    id: randomId(),
+    nombre: "Educacion",
+    },
+    {
+    id: randomId(),
+    nombre: "Trabajo",
+    },
+];
+
+/////////////////// funcion para agregar categorias en el select ///////////////////
+
+const llenarSelect = (categories) => {
+    $$(".select-categorias").forEach((select) => {
+    select.innerHTML = "";
+    for (let { nombre, id } of categories) {
+        select.innerHTML += `<option value="${id}">${nombre}</option>`;
+    }
+    });
+};
