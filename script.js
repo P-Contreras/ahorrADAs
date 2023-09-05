@@ -3,15 +3,8 @@
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
-// const botonCategoriasNavbar = $('#btn-nav-categorias');
-// const seccionCategorias = $('#seccion-categorias');
-// const seccionEditarCategorias = $('#seccion-editar-categorias');
-// const seccionBalance = $('#seccion-balance');
-// const seccionNuevaOperacion = $('#seccion-nueva-operacion');
-// const seccionReportesVacia = $('#seccion-reportes-vacia')
-// const botonBalanceNavbar = $('#btn-nav-balance');
-// const botonReportesNavbar = $('#btn-nav-reportes');
 
+/////////////////// FUNCION MOSTRAR VISTAS ///////////////////
 const showVista = (vistaAMostrar) => {
     $$(".vista").forEach((vista) => vista.classList.add("is-hidden"));
     $(`#${vistaAMostrar}`).classList.remove("is-hidden");
@@ -41,4 +34,22 @@ const contenedorFiltros = $('#contenedor-filtros');
 btnOcultarFiltros.onclick = () => {
     contenedorFiltros.classList.toggle("is-hidden");
     btnOcultarFiltros.textContent = contenedorFiltros.classList.contains("is-hidden") ? "Mostrar filtros" : "Ocultar filtros";
+};
+
+
+/////////////////// FUNCION LOCAL STORAGE ///////////////////
+
+const traerDatos = () => {
+    return JSON.parse(localStorage.getItem("datos"));
+};
+
+
+const subirDatos = (datos) => {
+    localStorage.setItem("datos", JSON.stringify({ ...traerDatos(), ...datos }));
+};
+
+
+const datos = traerDatos() || {
+    categorias: [],
+    operaciones: [],
 };
