@@ -47,3 +47,9 @@ const traerDatos = () => {
 const subirDatos = (datos) => {
     localStorage.setItem("datos", JSON.stringify({ ...traerDatos(), ...datos }));
 };
+
+
+const datos = traerDatos() || {
+    categorias: [],
+    operaciones: [],
+};
