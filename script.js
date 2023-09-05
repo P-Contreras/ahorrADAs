@@ -1,41 +1,38 @@
-// función reutilizable para traer elementos del HTML
-function $(selector) {
-    return document.querySelector(selector);
-}
+// funciones reutilizables para traer elementos del HTML
 
-const botonCategoriasNavbar = $('#btn-nav-categorias');
-const seccionCategorias = $('#seccion-categorias');
-const seccionEditarCategorias = $('#seccion-editar-categorias');
-const seccionBalance = $('#seccion-balance');
-const seccionNuevaOperacion = $('#seccion-nueva-operacion');
-const seccionReportesVacia = $('#seccion-reportes-vacia')
-const botonBalanceNavbar = $('#btn-nav-balance');
-const botonReportesNavbar = $('#btn-nav-reportes');
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => document.querySelectorAll(selector);
 
+// const botonCategoriasNavbar = $('#btn-nav-categorias');
+// const seccionCategorias = $('#seccion-categorias');
+// const seccionEditarCategorias = $('#seccion-editar-categorias');
+// const seccionBalance = $('#seccion-balance');
+// const seccionNuevaOperacion = $('#seccion-nueva-operacion');
+// const seccionReportesVacia = $('#seccion-reportes-vacia')
+// const botonBalanceNavbar = $('#btn-nav-balance');
+// const botonReportesNavbar = $('#btn-nav-reportes');
 
-// botón Balance Navbar
-botonBalanceNavbar.onclick = () => {
-    seccionBalance.classList.remove("is-hidden");
-    seccionCategorias.classList.add("is-hidden");
-    seccionReportesVacia.classList.add("is-hidden");
-}
+const showVista = (vistaAMostrar) => {
+    $$(".vista").forEach((vista) => vista.classList.add("is-hidden"));
+    $(`#${vistaAMostrar}`).classList.remove("is-hidden");
+};
 
-// botón Categorias Navbar
-botonCategoriasNavbar.onclick = () => {
-    seccionCategorias.classList.remove("is-hidden");
-    seccionEditarCategorias.classList.add("is-hidden");
-    seccionBalance.classList.add("is-hidden");
-    seccionNuevaOperacion.classList.add("is-hidden");
-    seccionReportesVacia.classList.add("is-hidden");
-}
+$("#btn-nav-balance").addEventListener("click", () =>
+    showVista("seccion-balance")
+);
 
-// botón Reportes Navbar
-botonReportesNavbar.onclick = () => {
-    seccionReportesVacia.classList.remove("is-hidden");
-    seccionBalance.classList.add("is-hidden");
-    seccionCategorias.classList.add("is-hidden")
-    seccionEditarCategorias.classList.add("is-hidden");
-}
+$("#btn-nav-reportes").addEventListener("click", () =>
+    showVista("seccion-reportes-vacia")
+);
+
+$("#btn-nav-categorias").addEventListener("click", () =>
+    showVista("seccion-categorias")
+);
+
+$("#btn-nueva-operacion").addEventListener("click", () =>
+    showVista("seccion-nueva-operacion")
+);
+
 
 // botón Ocultar Filtros
 const btnOcultarFiltros = $('#ocultar-filtros');
