@@ -53,3 +53,40 @@ const datos = traerDatos() || {
     categorias: [],
     operaciones: [],
 };
+
+/////////////////// funcion random ID ///////////////////
+
+const randomId = () => self.crypto.randomUUID();
+
+/////////////////// funcion para agregar categorias ///////////////////
+
+const traerCategorias = () => {
+    return traerDatos()?.categorias;
+};
+
+let categorias = traerCategorias() || [
+    {
+    id: randomId(),
+    nombre: "Comida",
+    },
+    {
+    id: randomId(),
+    nombre: "Servicios",
+    },
+    {
+    id: randomId(),
+    nombre: "Salidas",
+    },
+    {
+    id: randomId(),
+    nombre: "Transporte",
+    },
+    {
+    id: randomId(),
+    nombre: "Educacion",
+    },
+    {
+    id: randomId(),
+    nombre: "Trabajo",
+    },
+];
