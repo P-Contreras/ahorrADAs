@@ -511,9 +511,66 @@
                                 <div class="column is-3 has-text-right">$0</div>
                             </div>
                         </div>
-                        </div>
                     </section>
 </section>
+
+
+    <!-- Seccion Editar Operacion -->
+    <section class="container is-flex is-justify-content-center vista" id="seccion-nueva-operacion">
+        <div class="column box is-8">
+            <h2 class="title is-3 has-text-weight-bold pb-5">Editar Operación</h2>
+    
+            <div class="field">
+                <label class="label">Descripción</label>
+                <div class="control">
+                    <input class="input" type="text">
+                </div>
+            </div>
+    
+            <div class="field">
+                <label class="label">Monto</label>
+                <div class="control">
+                    <input class="input" type="number" value="0">
+                </div>
+            </div>
+    
+            <div class="field">
+                <label class="label">Tipo</label>
+                <div class="control">
+                    <div class="select is-fullwidth">
+                        <select>
+                            <option>Gasto</option>
+                            <option>Ganancia</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="field">
+                <label class="label">Categoría</label>
+                <div class="control">
+                    <div class="select is-fullwidth">
+                        <select class="select-categorias" id="">
+                            <option>Todas</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="field">
+                <label class="label">Fecha</label>
+                <div class="control">
+                    <input class="input is-fullwidth" type="date">
+                </div>
+            </div>
+    
+            <div class="buttons mt-6 level-right">
+                <button class="button is-light">Cancelar</button>
+                <button class="button is-link">Editar</button>
+            </div>
+        </div>
+    </section>
+<!-- ----Fin sección Editar Operacion----- -->
 
 
 </main>
