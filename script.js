@@ -168,16 +168,27 @@ $("#btn-guardar-categoria").addEventListener("click", editarCategoria);
 
 // Función para el botón Agregar
 const showAgregarCategoria = () => {
-    // Limpia el formulario de edición (si es necesario)
-    $("#input-editar-categoria").value = "";
-    // Oculta la sección de editar categorías
     $("#seccion-editar-categorias").classList.add("is-hidden");
-    // Muestra la sección de categorías
+    // // Muestra la sección de categorías
     $("#seccion-categorias").classList.remove("is-hidden");
 };
 
 // Agregar un manejador de eventos al botón Agregar
 $("#btn-agregar-categoria").addEventListener("click", showAgregarCategoria);
+
+//////////////////funcion de cancelar edicion de categoria////////////////////
+const cancelarEdicionCategoria = () => {
+    // Limpia el formulario de edición
+    // $("#input-editar-categoria").value = "";
+
+    // Oculta la sección de edición de categorías
+    $("#seccion-editar-categorias").classList.add("is-hidden");
+
+    // Muestra la sección de categorías
+    $("#seccion-categorias").classList.remove("is-hidden");
+};
+
+$("#btn-cancelar-edicion").addEventListener("click", cancelarEdicionCategoria);
 
 /////////////////////////// Función para ELIMINAR una categoría ////////////////////////
 
