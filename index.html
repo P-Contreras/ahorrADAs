@@ -116,8 +116,8 @@
                                 <label class="label">Categoría</label>
                                 <div class="control">
                                     <div class="select is-fullwidth">
-                                        <select class="select-categorias" id="select-categorias">
-                                            <option>Todas</option>
+                                        <select class="select-categorias todos-filtros" id="select-categorias">
+                                            <!-- <option>Todas</option> -->
                                         </select>
                                     </div>
                                 </div>
@@ -198,75 +198,21 @@
                                 <button type="submit" class="button is-link" id="btn-agregar-categoria">Agregar</button>
                             </div>
                         </div>
-                        <div class="mt-6" id="itemsCategorias">
-                            <div class="mb-3">
-                                <div class="columns is-vcentered">
-                                    <div class="column">
-                                        <span class="tag is-info is-light is-size-6">Comida</span>
-                                    </div>
-                                    <div class="column has-text is-narrow">
-                                        <a href="#" class="mr-4 edit-link is-size-6">Editar</a>
-                                        <a href="#" class="mr-4 edit-link is-size-6">Eliminar</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="columns is-vcentered">
-                                    <div class="column">
-                                        <span class="tag is-info is-light is-size-6">Servicios</span>
-                                    </div>
-                                    <div class="column has-text is-narrow">
-                                        <a href="#" class="mr-4 edit-link is-size-6">Editar</a>
-                                        <a href="#" class="mr-4 edit-link is-size-6">Eliminar</a>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="mb-3">
-                                <div class="columns is-vcentered">
-                                    <div class="column">
-                                        <span class="tag is-info is-light is-size-6">Salidas</span>
-                                    </div>
-                                    <div class="column has-text is-narrow">
-                                        <a href="#" class="mr-4 edit-link is-size-6">Editar</a>
-                                        <a href="#" class="mr-4 edit-link is-size-6">Eliminar</a>
-                                    </div>
+                        <ul class="mt-6" id="items-categorias">
+
+                            <!-- SE AGREGA CON JS  -->
+
+                            <!-- <li class="mb-3 columns is-vcentered">
+                                <div class="column">
+                                    <span class="tag is-info is-light is-size-6">Comida</span>
                                 </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="columns is-vcentered">
-                                    <div class="column">
-                                        <span class="tag is-info is-light is-size-6">Educación</span>
-                                    </div>
-                                    <div class="column has-text is-narrow">
-                                        <a href="#" class="mr-4 edit-link is-size-6">Editar</a>
-                                        <a href="#" class="mr-4 edit-link is-size-6">Eliminar</a>
-                                    </div>
+                                <div class="column has-text is-narrow">
+                                    <a href="#" class="mr-4 edit-link is-size-6">Editar</a>
+                                    <a href="#" class="mr-4 edit-link is-size-6">Eliminar</a>
                                 </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="columns is-vcentered">
-                                    <div class="column">
-                                        <span class="tag is-info is-light is-size-6">Transporte</span>
-                                    </div>
-                                    <div class="column has-text is-narrow">
-                                        <a href="#" class="mr-4 edit-link is-size-6">Editar</a>
-                                        <a href="#" class="mr-4 edit-link is-size-6">Eliminar</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="columns is-vcentered">
-                                    <div class="column">
-                                        <span class="tag is-info is-light is-size-6">Trabajo</span>
-                                    </div>
-                                    <div class="column has-text is-narrow">
-                                        <a href="#" class="mr-4 edit-link is-size-6">Editar</a>
-                                        <a href="#" class="mr-4 edit-link is-size-6">Eliminar</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            </li> -->
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -522,7 +468,7 @@
 
 
         <!-- Seccion Editar Operacion -->
-        <section class="container is-flex is-justify-content-center vista" id="seccion-nueva-operacion">
+        <section class="container is-flex is-justify-content-center vista is-hidden" id="seccion-nueva-operacion">
             <div class="column box is-8">
                 <h2 class="title is-3 has-text-weight-bold pb-5">Editar Operación</h2>
 

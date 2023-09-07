@@ -49,11 +49,6 @@ const subirDatos = (datos) => {
 };
 
 
-const datos = traerDatos() || {
-    categorias: [],
-    operaciones: [],
-};
-
 /////////////////// funcion random ID ///////////////////
 
 const randomId = () => self.crypto.randomUUID();
@@ -75,10 +70,6 @@ let categorias = traerCategorias() || [
     },
     {
     id: randomId(),
-    nombre: "Salidas",
-    },
-    {
-    id: randomId(),
     nombre: "Transporte",
     },
     {
@@ -93,11 +84,38 @@ let categorias = traerCategorias() || [
 
 /////////////////// funcion para agregar categorias en el select ///////////////////
 
-const llenarSelect = (categories) => {
+const llenarSelect = (categorias) => {
     $$(".select-categorias").forEach((select) => {
     select.innerHTML = "";
-    for (let { nombre, id } of categories) {
+
+    if (select.classList.contains("todos-filtros")) {
+        select.innerHTML = "<option value='todas'>Todas</option>";
+    }
+
+    for (let { nombre, id } of categorias) {
         select.innerHTML += `<option value="${id}">${nombre}</option>`;
     }
     });
 };
+
+
+const listaCategorias = (categorias) => {
+    console.log(categorias);
+    $("#items-categorias").innerHTML = "";
+    for (let { nombre, id } of categorias) {
+        $("#items-categorias").innerHTML += 
+        `<li class="mb-3 columns is-vcentered">
+            <div class="column">
+                <span class="tag is-info is-light is-size-6">${nombre}</span>
+            </div>
+            <div class="column has-text is-narrow">
+                <a onclick="showEditCategory('${id}')" id="${id}" class="mr-4 edit-link is-size-6">Editar</a>
+                <a onclick="showEditCategory('${id}')" id="${id}" class="mr-4 edit-link is-size-6">Eliminar</a>
+            </div>
+        </li>`;
+        }
+    };
+
+
+llenarSelect(categorias);
+listaCategorias(categorias);
