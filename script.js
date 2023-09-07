@@ -157,6 +157,7 @@ const editarCategoria = () => {
     categoriaAEditar.nombre = nuevoNombre;
     subirDatos({ categorias });
     listaCategorias(categorias);
+    llenarSelect(categorias);
 
     // Oculta el formulario de edición y muestra la sección de categorías de nuevo
     $("#seccion-categorias").classList.remove("is-hidden");
@@ -178,9 +179,6 @@ $("#btn-agregar-categoria").addEventListener("click", showAgregarCategoria);
 
 //////////////////funcion de cancelar edicion de categoria////////////////////
 const cancelarEdicionCategoria = () => {
-    // Limpia el formulario de edición
-    // $("#input-editar-categoria").value = "";
-
     // Oculta la sección de edición de categorías
     $("#seccion-editar-categorias").classList.add("is-hidden");
 
@@ -200,10 +198,8 @@ const eliminarCategoria = (id) => {
         // Filtra las categorías para eliminar la categoría con el ID correspondiente
         categorias = categorias.filter((categoria) => categoria.id !== id);
 
-        // Guarda los cambios en el almacenamiento local si lo deseas
         subirDatos({ categorias });
-
-        // Vuelve a cargar la lista de categorías para reflejar los cambios
         listaCategorias(categorias);
+        llenarSelect(categorias);
     }
 };
