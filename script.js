@@ -98,9 +98,8 @@ const llenarSelect = (categorias) => {
     });
 };
 
-
+/////////////////// funcion para mostrar las categorias en el HTML ///////////////////
 const listaCategorias = (categorias) => {
-    console.log(categorias);
     $("#items-categorias").innerHTML = "";
     for (let { nombre, id } of categorias) {
         $("#items-categorias").innerHTML += 
@@ -120,11 +119,39 @@ const listaCategorias = (categorias) => {
 llenarSelect(categorias);
 listaCategorias(categorias);
 
-////////////////////////Función para obtener categoria/////////////////////////////////////////////
+////////////////////////// Función para obtener categoria //////////////////////////
 
 const obtenerCategoria = (idCategoria, categorias) => {
     return categorias.find((categoria) => categoria.id === idCategoria);
 };
+
+////////////////////////// Función para AGREGAR categoria //////////////////////////
+const botonAgregarCategoria = $("#btn-agregar-categoria");
+const inputNuevaCategoria = $("#nueva-categoria-input");
+
+
+botonAgregarCategoria.addEventListener("click", () => {
+    const nuevoNombreCategoria = inputNuevaCategoria.value;
+
+    const nuevaCategoria = {
+        id: randomId(),
+        nombre: nuevoNombreCategoria,
+    };
+
+    // Agrega la nueva categoría al array de categorías
+    categorias.push(nuevaCategoria);
+
+    // Actualiza el almacenamiento local (si es necesario)
+    subirDatos({ categorias });
+
+    // Actualiza la lista de categorías en el HTML
+    listaCategorias(categorias);
+
+    //actualizo los select con la nueva categoria agregada
+    llenarSelect(categorias);
+
+    inputNuevaCategoria.value = "";
+});
 
 ////////////////////////// EDITAR categoria //////////////////////////
 
@@ -138,8 +165,8 @@ const showEditCategory = (id) => {
     // Rellena el formulario de edición con el nombre de la categoría
     $("#input-editar-categoria").value = categoriaAEditar.nombre;
     $("#btn-guardar-categoria").dataset.id = id; // Almacenamos el ID en el botón Guardar
-    $("#seccion-categorias").classList.add("is-hidden"); // Oculta la sección de categorías
-    $("#seccion-editar-categorias").classList.remove("is-hidden"); // Muestra la sección de editar categorías
+    $("#seccion-categorias").classList.add("is-hidden");
+    $("#seccion-editar-categorias").classList.remove("is-hidden");
 };
 
 // Función para guardar la edición
@@ -159,30 +186,26 @@ const editarCategoria = () => {
     listaCategorias(categorias);
     llenarSelect(categorias);
 
-    // Oculta el formulario de edición y muestra la sección de categorías de nuevo
     $("#seccion-categorias").classList.remove("is-hidden");
     $("#seccion-editar-categorias").classList.add("is-hidden");
 };
 
-// Agregar un manejador de eventos al botón Guardar
+// eventlistener para el botón GUARDAR
 $("#btn-guardar-categoria").addEventListener("click", editarCategoria);
 
 // Función para el botón Agregar
 const showAgregarCategoria = () => {
     $("#seccion-editar-categorias").classList.add("is-hidden");
-    // // Muestra la sección de categorías
     $("#seccion-categorias").classList.remove("is-hidden");
 };
 
-// Agregar un manejador de eventos al botón Agregar
+// eventlistener para el botón AGREGAR
 $("#btn-agregar-categoria").addEventListener("click", showAgregarCategoria);
 
-//////////////////funcion de cancelar edicion de categoria////////////////////
+//////////////////funcion de CANCELAR edicion de categoria////////////////////
 const cancelarEdicionCategoria = () => {
-    // Oculta la sección de edición de categorías
     $("#seccion-editar-categorias").classList.add("is-hidden");
 
-    // Muestra la sección de categorías
     $("#seccion-categorias").classList.remove("is-hidden");
 };
 
@@ -195,7 +218,6 @@ const eliminarCategoria = (id) => {
     const confirmarEliminacion = confirm("¿Estás seguro de que deseas eliminar esta categoría?");
 
     if (confirmarEliminacion) {
-        // Filtra las categorías para eliminar la categoría con el ID correspondiente
         categorias = categorias.filter((categoria) => categoria.id !== id);
 
         subirDatos({ categorias });
