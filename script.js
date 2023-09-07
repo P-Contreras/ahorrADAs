@@ -110,7 +110,7 @@ const listaCategorias = (categorias) => {
             </div>
             <div class="column has-text is-narrow">
                 <a onclick="showEditCategory('${id}')" id="${id}" class="mr-4 edit-link is-size-6">Editar</a>
-                <a onclick="showEditCategory('${id}')" id="${id}" class="mr-4 edit-link is-size-6">Eliminar</a>
+                <a onclick="eliminarCategoria('${id}')" id="${id}" class="mr-4 edit-link is-size-6">Eliminar</a>
             </div>
         </li>`;
         }
@@ -119,3 +119,80 @@ const listaCategorias = (categorias) => {
 
 llenarSelect(categorias);
 listaCategorias(categorias);
+
+////////////////////////Función para obtener categoria/////////////////////////////////////////////
+
+const obtenerCategoria = (idCategoria, categorias) => {
+    return categorias.find((categoria) => categoria.id === idCategoria);
+};
+
+////////////////////////// EDITAR categoria //////////////////////////
+
+const showEditCategory = (id) => {
+    const categoriaAEditar = obtenerCategoria(id, categorias);
+    if (!categoriaAEditar) {
+        console.error("La categoría no se encontró.");
+        return;
+    }
+
+    // Rellena el formulario de edición con el nombre de la categoría
+    $("#input-editar-categoria").value = categoriaAEditar.nombre;
+    $("#btn-guardar-categoria").dataset.id = id; // Almacenamos el ID en el botón Guardar
+    $("#seccion-categorias").classList.add("is-hidden"); // Oculta la sección de categorías
+    $("#seccion-editar-categorias").classList.remove("is-hidden"); // Muestra la sección de editar categorías
+};
+
+// Función para guardar la edición
+const editarCategoria = () => {
+    const id = $("#btn-guardar-categoria").dataset.id;
+    const nuevoNombre = $("#input-editar-categoria").value;
+
+    // Encuentra la categoría en el array
+    const categoriaAEditar = categorias.find((categoria) => categoria.id === id);
+    if (!categoriaAEditar) {
+        console.error("La categoría no se encontró.");
+        return;
+    }
+
+    categoriaAEditar.nombre = nuevoNombre;
+    subirDatos({ categorias });
+    listaCategorias(categorias);
+
+    // Oculta el formulario de edición y muestra la sección de categorías de nuevo
+    $("#seccion-categorias").classList.remove("is-hidden");
+    $("#seccion-editar-categorias").classList.add("is-hidden");
+};
+
+// Agregar un manejador de eventos al botón Guardar
+$("#btn-guardar-categoria").addEventListener("click", editarCategoria);
+
+// Función para el botón Agregar
+const showAgregarCategoria = () => {
+    // Limpia el formulario de edición (si es necesario)
+    $("#input-editar-categoria").value = "";
+    // Oculta la sección de editar categorías
+    $("#seccion-editar-categorias").classList.add("is-hidden");
+    // Muestra la sección de categorías
+    $("#seccion-categorias").classList.remove("is-hidden");
+};
+
+// Agregar un manejador de eventos al botón Agregar
+$("#btn-agregar-categoria").addEventListener("click", showAgregarCategoria);
+
+/////////////////////////// Función para ELIMINAR una categoría ////////////////////////
+
+const eliminarCategoria = (id) => {
+    // pide al usuario confirmar que se quiere eliminar
+    const confirmarEliminacion = confirm("¿Estás seguro de que deseas eliminar esta categoría?");
+
+    if (confirmarEliminacion) {
+        // Filtra las categorías para eliminar la categoría con el ID correspondiente
+        categorias = categorias.filter((categoria) => categoria.id !== id);
+
+        // Guarda los cambios en el almacenamiento local si lo deseas
+        subirDatos({ categorias });
+
+        // Vuelve a cargar la lista de categorías para reflejar los cambios
+        listaCategorias(categorias);
+    }
+};
