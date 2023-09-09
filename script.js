@@ -202,6 +202,7 @@ const showAgregarCategoria = () => {
 // eventlistener para el botón AGREGAR
 $("#btn-agregar-categoria").addEventListener("click", showAgregarCategoria);
 
+
 //////////////////funcion de CANCELAR edicion de categoria////////////////////
 const cancelarEdicionCategoria = () => {
     showVista("seccion-categorias");
@@ -229,3 +230,37 @@ const cancelarNuevaOp = () => {
     showVista("seccion-balance"); 
 }
 $("#btn-cancelar-op").addEventListener("click", cancelarNuevaOp);
+
+
+
+//////////////////////// Funcion NUEVA OPERACION ////////////////////////////////
+
+const traerOperaciones = () => {
+    return traerDatos()?.operaciones;
+};
+
+
+let operaciones = []
+
+
+const nuevaOperacion = () =>{
+    let operacion = {
+        id: randomId(),
+        descripcion: $('#input-descripcion').value,
+        monto: $('#input-monto').value,
+        tipo: $('#select-tipo').value,
+        categoria: $('#select-categorias').value,
+        fecha: $('#input-fecha').value,
+    }
+
+    subirDatos({ operaciones: [...traerOperaciones(), operacion] });
+    showVista("seccion-balance");
+};
+
+
+$("#btn-agregar-op").addEventListener("click", nuevaOperacion);
+
+
+
+
+// []

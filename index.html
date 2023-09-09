@@ -98,7 +98,7 @@
                             <a class="has-text-link is-hidden">Mostrar filtros</a>
                         </div>
 
-                        <div id="contenedor-filtros">
+                        <form id="contenedor-filtros">
                             <div class="field">
                                 <label class="label">Tipo</label>
                                 <div class="control">
@@ -116,8 +116,7 @@
                                 <label class="label">Categoría</label>
                                 <div class="control">
                                     <div class="select is-fullwidth">
-                                        <select class="select-categorias todos-filtros" id="select-categorias">
-                                            <!-- <option>Todas</option> -->
+                                        <select class="select-categorias todos-filtros">
                                         </select>
                                     </div>
                                 </div>
@@ -145,7 +144,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
 
@@ -253,55 +252,56 @@
         <section class="container is-flex is-justify-content-center vista is-hidden" id="seccion-nueva-operacion">
             <div class="column box is-8">
                 <h2 class="title is-3 has-text-weight-bold pb-5">Nueva Operación</h2>
-
-                <div class="field">
-                    <label class="label">Descripción</label>
-                    <div class="control">
-                        <input class="input" type="text">
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">Monto</label>
-                    <div class="control">
-                        <input class="input" type="number" value="0">
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">Tipo</label>
-                    <div class="control">
-                        <div class="select is-fullwidth">
-                            <select>
-                                <option>Gasto</option>
-                                <option>Ganancia</option>
-                            </select>
+                
+                <form>
+                    <div class="field">
+                        <label class="label">Descripción</label>
+                        <div class="control">
+                            <input class="input" type="text" id="input-descripcion">
                         </div>
                     </div>
-                </div>
 
-                <div class="field">
-                    <label class="label">Categoría</label>
-                    <div class="control">
-                        <div class="select is-fullwidth">
-                            <select class="select-categorias" id="">
-                                <option>Todas</option>
-                            </select>
+                    <div class="field">
+                        <label class="label">Monto</label>
+                        <div class="control">
+                            <input class="input" type="number" id="input-monto">
                         </div>
                     </div>
-                </div>
 
-                <div class="field">
-                    <label class="label">Fecha</label>
-                    <div class="control">
-                        <input class="input is-fullwidth" type="date">
+                    <div class="field">
+                        <label class="label">Tipo</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select id="select-tipo">
+                                    <option>Gasto</option>
+                                    <option>Ganancia</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="buttons mt-6 level-right">
-                    <button class="button is-light" id="btn-cancelar-op">Cancelar</button>
-                    <button class="button is-link">Agregar</button>
-                </div>
+                    <div class="field">
+                        <label class="label">Categoría</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select class="select-categorias" id="select-categorias">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Fecha</label>
+                        <div class="control">
+                            <input class="input is-fullwidth" type="date" id="input-fecha">
+                        </div>
+                    </div>
+
+                    <div class="buttons mt-6 level-right">
+                        <button class="button is-light" id="btn-cancelar-op">Cancelar</button>
+                        <button class="button is-link" id="btn-agregar-op">Agregar</button>
+                    </div>
+                </form>
             </div>
         </section>
         <!-- ----Fin sección Nueva Operacion----- -->
@@ -472,54 +472,56 @@
             <div class="column box is-8">
                 <h2 class="title is-3 has-text-weight-bold pb-5">Editar Operación</h2>
 
-                <div class="field">
-                    <label class="label">Descripción</label>
-                    <div class="control">
-                        <input class="input" type="text">
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">Monto</label>
-                    <div class="control">
-                        <input class="input" type="number" value="0">
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">Tipo</label>
-                    <div class="control">
-                        <div class="select is-fullwidth">
-                            <select>
-                                <option>Gasto</option>
-                                <option>Ganancia</option>
-                            </select>
+                <form>
+                    <div class="field">
+                        <label class="label">Descripción</label>
+                        <div class="control">
+                            <input class="input" type="text">
                         </div>
                     </div>
-                </div>
 
-                <div class="field">
-                    <label class="label">Categoría</label>
-                    <div class="control">
-                        <div class="select is-fullwidth">
-                            <select class="select-categorias" id="">
-                                <option>Todas</option>
-                            </select>
+                    <div class="field">
+                        <label class="label">Monto</label>
+                        <div class="control">
+                            <input class="input" type="number" value="0">
                         </div>
                     </div>
-                </div>
 
-                <div class="field">
-                    <label class="label">Fecha</label>
-                    <div class="control">
-                        <input class="input is-fullwidth" type="date">
+                    <div class="field">
+                        <label class="label">Tipo</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select>
+                                    <option>Gasto</option>
+                                    <option>Ganancia</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="buttons mt-6 level-right">
-                    <button class="button is-light">Cancelar</button>
-                    <button class="button is-link">Editar</button>
-                </div>
+                    <div class="field">
+                        <label class="label">Categoría</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select class="select-categorias" id="">
+                                    <option>Todas</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Fecha</label>
+                        <div class="control">
+                            <input class="input is-fullwidth" type="date">
+                        </div>
+                    </div>
+
+                    <div class="buttons mt-6 level-right">
+                        <button class="button is-light">Cancelar</button>
+                        <button class="button is-link">Editar</button>
+                    </div>
+                </form>
             </div>
         </section>
         <!-- ----Fin sección Editar Operacion----- -->
