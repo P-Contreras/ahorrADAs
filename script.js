@@ -204,10 +204,8 @@ $("#btn-agregar-categoria").addEventListener("click", showAgregarCategoria);
 
 //////////////////funcion de CANCELAR edicion de categoria////////////////////
 const cancelarEdicionCategoria = () => {
-    $("#seccion-editar-categorias").classList.add("is-hidden");
-
-    $("#seccion-categorias").classList.remove("is-hidden");
-};
+    showVista("seccion-categorias");
+}
 
 $("#btn-cancelar-edicion").addEventListener("click", cancelarEdicionCategoria);
 
@@ -225,3 +223,9 @@ const eliminarCategoria = (id) => {
         llenarSelect(categorias);
     }
 };
+
+//////////////////////// funcion CANCELAR OPERACION ////////////////////////////////
+const cancelarNuevaOp = () => {
+    showVista("seccion-balance"); 
+}
+$("#btn-cancelar-op").addEventListener("click", cancelarNuevaOp);
