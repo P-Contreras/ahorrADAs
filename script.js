@@ -306,16 +306,29 @@ const listaOperaciones = (operaciones) => {
             </div>
             <div class="column">
                 <a onclick="showEditOperation('${id}')" id="${id}" class="mr-4 edit-link is-size-7">Editar</a>
-                <a onclick="showEditOperation('${id}')" id="${id}" class="mr-4 edit-link is-size-7">Eliminar</a>
+                <a onclick="eliminarOperacion('${id}')" id="${id}" class="mr-4 edit-link is-size-7">Eliminar</a>
             </div>
         </li>`
     }
 };
 
-
 listaOperaciones(operaciones)
 
-console.log(operaciones);
+
+
+//////////////////////// Funcion para ELIMINAR operacion ////////////////////////////////
+
+const eliminarOperacion = (id) =>{
+    // pide al usuario confirmar que se quiere eliminar
+    const confirmarEliminacion = confirm("¿Estás seguro de que deseas eliminar esta operación?");
+
+    if (confirmarEliminacion) {
+        operaciones = operaciones.filter((operacion) => operacion.id !== id);
+
+        subirDatos({ operaciones });
+        listaOperaciones(operaciones)
+    }
+}
 
 
 
