@@ -162,7 +162,7 @@
 
                             <!-- Imagen inicial -->
                             <div>
-                                <div class="is-flex is-flex-direction-column is-align-items-center">
+                                <div class="is-flex is-flex-direction-column is-align-items-center is-hidden">
                                     <figure class="image wallet">
                                         <img src="img/wallet.png">
                                     </figure>
@@ -170,6 +170,13 @@
                                     <p class="subtitle is-4 has-text-weight-medium">Sin resultados</p>
                                     <p class="subtitle is-size-6">Cambia los filtros o agrega operaciones</p>
                                 </div>
+                            </div>
+
+                            <!-- Lista de Operaciones -->
+                            <div>
+                                <ul class="is-fullwidth is-hoverable" id="items-operaciones">
+                                    <!-- Se completa con JS -->
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -190,8 +197,8 @@
                         <label class="label mt-6">Nombre</label>
                         <div class="field is-grouped">
                             <div class="control is-expanded">
-                                <input class="input" type="text" id="nueva-categoria-input" placeholder="Ingrese el nombre de la categoría"
-                                    required>
+                                <input class="input" type="text" id="nueva-categoria-input"
+                                    placeholder="Ingrese el nombre de la categoría" required>
                             </div>
                             <div class="control">
                                 <button type="submit" class="button is-link" id="btn-agregar-categoria">Agregar</button>
@@ -252,7 +259,7 @@
         <section class="container is-flex is-justify-content-center vista is-hidden" id="seccion-nueva-operacion">
             <div class="column box is-8">
                 <h2 class="title is-3 has-text-weight-bold pb-5">Nueva Operación</h2>
-                
+
                 <form>
                     <div class="field">
                         <label class="label">Descripción</label>

@@ -82,6 +82,7 @@ let categorias = traerCategorias() || [
     },
 ];
 
+
 /////////////////// funcion para agregar categorias en el select ///////////////////
 
 const llenarSelect = (categorias) => {
@@ -118,6 +119,7 @@ const listaCategorias = (categorias) => {
 
 llenarSelect(categorias);
 listaCategorias(categorias);
+
 
 ////////////////////////// Función para obtener categoria //////////////////////////
 
@@ -223,6 +225,7 @@ const eliminarCategoria = (id) => {
         listaCategorias(categorias);
         llenarSelect(categorias);
     }
+
 };
 
 //////////////////////// funcion CANCELAR OPERACION ////////////////////////////////
@@ -239,27 +242,80 @@ const traerOperaciones = () => {
     return traerDatos()?.operaciones;
 };
 
-
-let operaciones = []
-
+let operaciones = traerOperaciones()
 
 const nuevaOperacion = () =>{
-    let operacion = {
-        id: randomId(),
-        descripcion: $('#input-descripcion').value,
-        monto: $('#input-monto').value,
-        tipo: $('#select-tipo').value,
-        categoria: $('#select-categorias').value,
-        fecha: $('#input-fecha').value,
-    }
+        let operacion = {
+            id: randomId(),
+            descripcion: $('#input-descripcion').value,
+            monto: Number($('#input-monto').value),
+            tipo: $('#select-tipo').value,
+            categoria: $('#select-categorias').value,
+            fecha: ($('#input-fecha').value),
+        }
 
-    subirDatos({ operaciones: [...traerOperaciones(), operacion] });
-    showVista("seccion-balance");
+        operaciones.push(nuevaOperacion);
+
+        subirDatos({ operaciones: [...traerOperaciones(), operacion] });
+
+        showVista("seccion-balance");
+    };
+
+$("#btn-agregar-op").addEventListener("click", nuevaOperacion)
+
+
+
+//////////////////////// Funcion para que la lista de operaciones se vea en el html ////////////////////////////////
+
+const listaOperaciones = (operaciones) => {
+    //Encabezado de la tabla
+    $("#items-operaciones").innerHTML = 
+    `<li class="columns is-vcentered">
+        <div class="column is-3">
+            <span class="is-size-6 has-text-weight-bold">Descripción</span>
+        </div>
+        <div class="column">
+            <span class="is-size-6 has-text-weight-bold">Categoría</span>
+        </div>
+        <div class="column">
+            <span class="is-size-6 has-text-weight-bold">Fecha</span>
+        </div>
+        <div class="column">
+            <span class="is-size-6 has-text-weight-bold">Monto</span>
+        </div>
+        <div class="column">
+            <span class="is-size-6 has-text-weight-bold">Acciones</span>
+        </div>
+    </li>`;
+
+    // Operaciones
+    for (let { id, descripcion, categoria, fecha, monto } of operaciones) {
+        $("#items-operaciones").innerHTML += 
+        `<li class="columns is-vcentered">
+            <div class="column is-3">
+                <span class="is-size-6 has-text-weight-bold">${descripcion}</span>
+            </div>
+            <div class="column">
+                <span class="tag is-info is-light is-size-7">${obtenerCategoria(categoria, categorias).nombre}</span>
+            </div>
+            <div class="column">
+                <span class="is-size-6">${fecha}</span>
+            </div>
+            <div class="column">
+                <span class="is-size-6">${monto}</span>
+            </div>
+            <div class="column">
+                <a onclick="showEditOperation('${id}')" id="${id}" class="mr-4 edit-link is-size-7">Editar</a>
+                <a onclick="showEditOperation('${id}')" id="${id}" class="mr-4 edit-link is-size-7">Eliminar</a>
+            </div>
+        </li>`
+    }
 };
 
 
-$("#btn-agregar-op").addEventListener("click", nuevaOperacion);
+listaOperaciones(operaciones)
 
+console.log(operaciones);
 
 
 
