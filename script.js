@@ -45,7 +45,9 @@ const traerDatos = () => {
 
 
 const subirDatos = (datos) => {
-    localStorage.setItem("datos", JSON.stringify({ ...traerDatos(), ...datos }));
+    const datosActualizados = traerDatos() || {};
+    localStorage.setItem("datos", JSON.stringify({ ...datosActualizados, ...datos }));
+    localStorage.setItem("categorias", JSON.stringify(categorias));
 };
 
 
@@ -119,6 +121,7 @@ const listaCategorias = (categorias) => {
 
 llenarSelect(categorias);
 listaCategorias(categorias);
+subirDatos({ categorias });
 
 
 ////////////////////////// Función para obtener categoria //////////////////////////
@@ -239,7 +242,7 @@ $("#btn-cancelar-op").addEventListener("click", cancelarNuevaOp);
 //////////////////////// Funcion NUEVA OPERACION ////////////////////////////////
 
 const traerOperaciones = () => {
-    return traerDatos()?.operaciones;
+    return traerDatos()?.operaciones || [];
 };
 
 let operaciones = traerOperaciones()
@@ -251,10 +254,10 @@ const nuevaOperacion = () =>{
             monto: Number($('#input-monto').value),
             tipo: $('#select-tipo').value,
             categoria: $('#select-categorias').value,
-            fecha: ($('#input-fecha').value),
+            fecha: $('#input-fecha').value,
         }
 
-        operaciones.push(nuevaOperacion);
+        operaciones.push(operacion);
 
         subirDatos({ operaciones: [...traerOperaciones(), operacion] });
 
@@ -289,20 +292,28 @@ const listaOperaciones = (operaciones) => {
     </li>`;
 
     // Operaciones
-    for (let { id, descripcion, categoria, fecha, monto } of operaciones) {
+    for (let { id, descripcion, categoria, fecha, monto, tipo } of operaciones) {
+        const categoriaArr = obtenerCategoria(categoria, categorias);
+        const categoriaNombre = categoriaArr ? categoriaArr.nombre : 'Categoría no encontrada';
+
+        const fechaFormateada = new Date(fecha);
+
+        const montoSigno = tipo === "Ganancia" ? `+$` : `-$`;
+        const montoClase = tipo === "Ganancia" ? "has-text-success" : "has-text-danger";
+
         $("#items-operaciones").innerHTML += 
         `<li class="columns is-vcentered">
             <div class="column is-3">
                 <span class="is-size-6 has-text-weight-bold">${descripcion}</span>
             </div>
             <div class="column">
-                <span class="tag is-info is-light is-size-7">${obtenerCategoria(categoria, categorias).nombre}</span>
+                <span class="tag is-info is-light is-size-7">${categoriaNombre}</span>
             </div>
             <div class="column">
-                <span class="is-size-6">${fecha}</span>
+            <span class="is-size-6">${fechaFormateada.getDate() + 1}/${fechaFormateada.getMonth() + 1}/${fechaFormateada.getFullYear()}</span>
             </div>
             <div class="column">
-                <span class="is-size-6">${monto}</span>
+                <span class="is-size-6 has-text-weight-bold ${montoClase} has-text-right">${montoSigno}${monto}</span>
             </div>
             <div class="column">
                 <a onclick="showEditOperation('${id}')" id="${id}" class="mr-4 edit-link is-size-7">Editar</a>
@@ -329,6 +340,60 @@ const eliminarOperacion = (id) =>{
         listaOperaciones(operaciones)
     }
 }
+
+
+//////////////////////// Funcion para EDITAR operacion ////////////////////////////////
+
+const obtenerOperacion = (idOperacion) => {
+    return operaciones.find((operacion) => operacion.id === idOperacion);
+};
+
+
+const showEditOperation = (id) =>{
+
+    //Abre la seccion editar operacion
+    showVista("seccion-editar-operacion")
+
+    let = {descripcion, monto, tipo, categoria, fecha} = obtenerOperacion(id)
+
+    // Rellena el form con la info de la operacion seleccionada
+    $('#editar-operacion-descripcion').value = descripcion;
+    $('#editar-operacion-monto').value = monto;
+    $('#editar-operacion-tipo').value = tipo;
+    $('#editar-operacion-categoria').value = categoria;
+    $('#editar-operacion-fecha').value = fecha
+
+    // Funcionalidad del boton cancelar
+    $("#btn-cancelar-editar-op").addEventListener("click", () =>
+    showVista("seccion-balance")
+    );
+
+    // Funcionalidad del boton editar
+    $("#btn-editar-op").addEventListener("click", () => editarOperacion(id));
+}
+
+
+// //////////////////////// Funcion para guardar la edicion ////////////////////////////////
+
+const editarOperacion = (id) => {
+    const operacionAEditar = obtenerOperacion(id);
+
+    if (!operacionAEditar) {
+        console.error("La operación no se encontró.");
+        return;
+    }
+
+    operacionAEditar.descripcion = $('#editar-operacion-descripcion').value;
+    operacionAEditar.monto = parseFloat($('#editar-operacion-monto').value); 
+    operacionAEditar.tipo = $('#editar-operacion-tipo').value;
+    operacionAEditar.categoria = $('#editar-operacion-categoria').value;
+    operacionAEditar.fecha = $('#editar-operacion-fecha').value;
+
+    subirDatos({ operaciones });
+    listaOperaciones(operaciones);
+    showVista("seccion-balance");
+};
+
 
 
 

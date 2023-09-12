@@ -475,7 +475,7 @@
 
 
         <!-- Seccion Editar Operacion -->
-        <section class="container is-flex is-justify-content-center vista is-hidden" id="seccion-nueva-operacion">
+        <section class="container is-flex is-justify-content-center vista is-hidden" id="seccion-editar-operacion">
             <div class="column box is-8">
                 <h2 class="title is-3 has-text-weight-bold pb-5">Editar Operación</h2>
 
@@ -483,14 +483,14 @@
                     <div class="field">
                         <label class="label">Descripción</label>
                         <div class="control">
-                            <input class="input" type="text">
+                            <input class="input" type="text" id="editar-operacion-descripcion">
                         </div>
                     </div>
 
                     <div class="field">
                         <label class="label">Monto</label>
                         <div class="control">
-                            <input class="input" type="number" value="0">
+                            <input class="input" type="number" id="editar-operacion-monto">
                         </div>
                     </div>
 
@@ -498,7 +498,7 @@
                         <label class="label">Tipo</label>
                         <div class="control">
                             <div class="select is-fullwidth">
-                                <select>
+                                <select id="editar-operacion-tipo">
                                     <option>Gasto</option>
                                     <option>Ganancia</option>
                                 </select>
@@ -510,7 +510,7 @@
                         <label class="label">Categoría</label>
                         <div class="control">
                             <div class="select is-fullwidth">
-                                <select class="select-categorias" id="">
+                                <select class="select-categorias" id="editar-operacion-categoria">
                                     <option>Todas</option>
                                 </select>
                             </div>
@@ -520,13 +520,13 @@
                     <div class="field">
                         <label class="label">Fecha</label>
                         <div class="control">
-                            <input class="input is-fullwidth" type="date">
+                            <input class="input is-fullwidth" type="date" id="editar-operacion-fecha">
                         </div>
                     </div>
 
                     <div class="buttons mt-6 level-right">
-                        <button class="button is-light" id="btn-cancelar-editar-op">Cancelar</button>
-                        <button class="button is-link" id="btn-editar-op">Editar</button>
+                        <button class="button is-light" id="btn-cancelar-editar-op" type="button">Cancelar</button>
+                        <button class="button is-link" id="btn-editar-op" type="button">Editar</button>
                     </div>
                 </form>
             </div>
