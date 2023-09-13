@@ -397,25 +397,17 @@ const editarOperacion = (id) => {
 };
 
 
-// //////////////////////// Funcion para filtrar el tipo de operacion ////////////////////////////////
+// //////////////////////// Funcion para filtrar y sumar segun el tipo de la operacion ////////////////////////////////
 
 
-const filtrarPorTipo = (operaciones, tipo) => {
-    return operaciones.filter((operacion) => operacion.tipo === tipo);
+const operacionesFiltradas = (operaciones, tipo) => {
+    const filtroPorTipo = operaciones.filter((operacion) => operacion.tipo === tipo);
+    const montoTotal = filtroPorTipo.reduce((total, operacion) => total + operacion.monto, 0);
+    return montoTotal;
 };
 
-const tipoGanancia = filtrarPorTipo(operaciones, "Ganancia");
-const tipoGasto = filtrarPorTipo(operaciones, "Gasto");
-
-
-// //////////////////////// Funcion para extraer el monto de la operacion y sumarla ////////////////////////////////
-
-const sumarMontos = (operaciones) => {
-    return operaciones.reduce((total, operacion) => total + operacion.monto, 0);
-};
-
-const montoTotalGanancia = sumarMontos(tipoGanancia);
-const montoTotalGasto = sumarMontos(tipoGasto);
+const totalGanancia = operacionesFiltradas(operaciones, "Ganancia");
+const totalGasto = operacionesFiltradas(operaciones, "Gasto");
 
 
 
