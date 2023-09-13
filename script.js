@@ -408,6 +408,17 @@ const tipoGanancia = filtrarPorTipo(operaciones, "Ganancia");
 const tipoGasto = filtrarPorTipo(operaciones, "Gasto");
 
 
+// //////////////////////// Funcion para extraer el monto de la operacion y sumarla ////////////////////////////////
+
+const sumarMontos = (operaciones) => {
+    return operaciones.reduce((total, operacion) => total + operacion.monto, 0);
+};
+
+const montoTotalGanancia = sumarMontos(tipoGanancia);
+const montoTotalGasto = sumarMontos(tipoGasto);
+
+
+
 
 
 //[]
