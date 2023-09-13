@@ -395,3 +395,19 @@ const editarOperacion = (id) => {
     listaOperaciones(operaciones);
     showVista("seccion-balance");
 };
+
+
+// //////////////////////// Funcion para filtrar el tipo de operacion ////////////////////////////////
+
+
+const filtrarPorTipo = (operaciones, tipo) => {
+    return operaciones.filter((operacion) => operacion.tipo === tipo);
+};
+
+const tipoGanancia = filtrarPorTipo(operaciones, "Ganancia");
+const tipoGasto = filtrarPorTipo(operaciones, "Gasto");
+
+
+
+
+//[]
