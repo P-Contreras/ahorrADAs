@@ -231,6 +231,7 @@ const eliminarCategoria = (id) => {
 
 };
 
+
 //////////////////////// funcion CANCELAR OPERACION ////////////////////////////////
 const cancelarNuevaOp = () => {
     showVista("seccion-balance"); 
@@ -265,7 +266,6 @@ const nuevaOperacion = () =>{
     };
 
 $("#btn-agregar-op").addEventListener("click", nuevaOperacion)
-
 
 
 //////////////////////// Funcion para que la lista de operaciones se vea en el html ////////////////////////////////
@@ -321,6 +321,8 @@ const listaOperaciones = (operaciones) => {
             </div>
         </li>`
     }
+
+    // $("#img-operaciones").classList.add("is-hidden");
 };
 
 listaOperaciones(operaciones)
@@ -393,8 +395,3 @@ const editarOperacion = (id) => {
     listaOperaciones(operaciones);
     showVista("seccion-balance");
 };
-
-
-
-
-// []
