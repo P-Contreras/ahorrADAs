@@ -406,9 +406,22 @@ const operacionesFiltradas = (operaciones, tipo) => {
     return montoTotal;
 };
 
-const totalGanancia = operacionesFiltradas(operaciones, "Ganancia");
-const totalGasto = operacionesFiltradas(operaciones, "Gasto");
+const totalGanancias = operacionesFiltradas(operaciones, "Ganancia");
+const totalGastos = operacionesFiltradas(operaciones, "Gasto");
 
+const totalBalance = totalGanancias - totalGastos;
+
+
+// //////////////////////// Funcion para que todo se vea en el html ////////////////////////////////
+
+
+const signoMonto = totalBalance >= 0 ? `+` : `-`;
+const colorMonto = signoMonto === "+" ? $("#total-balance").classList.add(`has-text-success`) : $("#total-balance").classList.add(`has-text-danger`)
+
+
+$("#monto-ganancias").innerHTML = `+$${totalGanancias}`
+$("#monto-gastos").innerHTML = `-$${totalGastos}`
+$("#total-balance").innerHTML = `${signoMonto}$${Math.abs(totalBalance)}`
 
 
 
