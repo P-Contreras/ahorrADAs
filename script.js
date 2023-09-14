@@ -338,17 +338,27 @@ listaOperaciones(operaciones)
 
 //////////////////////// Funcion para ELIMINAR operacion ////////////////////////////////
 
-const eliminarOperacion = (id) =>{
-    // pide al usuario confirmar que se quiere eliminar
+const eliminarOperacion = (id) => {
     const confirmarEliminacion = confirm("¿Estás seguro de que deseas eliminar esta operación?");
 
     if (confirmarEliminacion) {
         operaciones = operaciones.filter((operacion) => operacion.id !== id);
 
+        const totalGanancias = operacionesFiltradas(operaciones, "Ganancia");
+        const totalGastos = operacionesFiltradas(operaciones, "Gasto");
+
+
+        const totalBalance = totalGanancias - totalGastos;
+
+
+        $("#monto-ganancias").innerHTML = `+$${totalGanancias}`;
+        $("#monto-gastos").innerHTML = `-$${totalGastos}`;
+        $("#total-balance").innerHTML = `$${totalBalance}`;
+
+        listaOperaciones(operaciones);
         subirDatos({ operaciones });
-        listaOperaciones(operaciones)
     }
-}
+};
 
 
 //////////////////////// Funcion para EDITAR operacion ////////////////////////////////
