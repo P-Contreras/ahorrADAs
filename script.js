@@ -322,7 +322,14 @@ const listaOperaciones = (operaciones) => {
         </li>`
     }
 
-    // $("#img-operaciones").classList.add("is-hidden");
+    if (operaciones.length > 0) {
+        $("#img-operaciones").classList.add("is-hidden");
+        $("#items-operaciones").style.display = "block";
+    } else {
+        $("#img-operaciones").classList.remove("is-hidden");
+        $("#items-operaciones").style.display = "none";
+    }
+
 };
 
 listaOperaciones(operaciones)
