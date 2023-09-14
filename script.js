@@ -347,13 +347,24 @@ const eliminarOperacion = (id) => {
         const totalGanancias = operacionesFiltradas(operaciones, "Ganancia");
         const totalGastos = operacionesFiltradas(operaciones, "Gasto");
 
-
+        
         const totalBalance = totalGanancias - totalGastos;
 
 
         $("#monto-ganancias").innerHTML = `+$${totalGanancias}`;
         $("#monto-gastos").innerHTML = `-$${totalGastos}`;
         $("#total-balance").innerHTML = `$${totalBalance}`;
+
+        // actualizar estilo del div balance
+        const signoMonto = totalBalance > 0 ? `+` : totalBalance < 0 ? `-` : ``;
+        $("#total-balance").classList.remove("has-text-success", "has-text-danger");
+
+        if (signoMonto === "+") {
+            $("#total-balance").classList.add("has-text-success");
+        } else if (signoMonto === "-") {
+            $("#total-balance").classList.add("has-text-danger");
+        }
+
 
         listaOperaciones(operaciones);
         subirDatos({ operaciones });
