@@ -415,7 +415,6 @@ const totalBalance = totalGanancias - totalGastos;
 // //////////////////////// Funcion para que todo se vea en el html ////////////////////////////////
 
 
-//const signoMonto = totalBalance > 0 ? `+` : `-`;
 const signoMonto = totalBalance > 0 ? `+` : totalBalance < 0 ? `-` : ``;
 
 const colorMonto = signoMonto !== "" ? $("#total-balance").classList.add(signoMonto === "+" ? "has-text-success" : "has-text-danger") : "";
