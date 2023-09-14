@@ -395,3 +395,36 @@ const editarOperacion = (id) => {
     listaOperaciones(operaciones);
     showVista("seccion-balance");
 };
+
+
+// //////////////////////// Funcion para filtrar y sumar segun el tipo de la operacion ////////////////////////////////
+
+
+const operacionesFiltradas = (operaciones, tipo) => {
+    const filtroPorTipo = operaciones.filter((operacion) => operacion.tipo === tipo);
+    const montoTotal = filtroPorTipo.reduce((total, operacion) => total + operacion.monto, 0);
+    return montoTotal;
+};
+
+const totalGanancias = operacionesFiltradas(operaciones, "Ganancia");
+const totalGastos = operacionesFiltradas(operaciones, "Gasto");
+
+const totalBalance = totalGanancias - totalGastos;
+
+
+// //////////////////////// Funcion para que todo se vea en el html ////////////////////////////////
+
+
+const signoMonto = totalBalance > 0 ? `+` : totalBalance < 0 ? `-` : ``;
+
+const colorMonto = signoMonto !== "" ? $("#total-balance").classList.add(signoMonto === "+" ? "has-text-success" : "has-text-danger") : "";
+
+
+$("#monto-ganancias").innerHTML = `+$${totalGanancias}`
+$("#monto-gastos").innerHTML = `-$${totalGastos}`
+$("#total-balance").innerHTML = `${signoMonto}$${Math.abs(totalBalance)}`
+
+
+
+
+//[]
