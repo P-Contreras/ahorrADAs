@@ -119,10 +119,6 @@ const listaCategorias = (categorias) => {
     };
 
 
-llenarSelect(categorias);
-listaCategorias(categorias);
-subirDatos({ categorias });
-
 
 ////////////////////////// Función para obtener categoria //////////////////////////
 
@@ -332,8 +328,6 @@ const listaOperaciones = (operaciones) => {
 
 };
 
-listaOperaciones(operaciones)
-
 
 
 //////////////////////// Funcion para ELIMINAR operacion ////////////////////////////////
@@ -451,6 +445,25 @@ const colorMonto = signoMonto !== "" ? $("#total-balance").classList.add(signoMo
 $("#monto-ganancias").innerHTML = `+$${totalGanancias}`
 $("#monto-gastos").innerHTML = `-$${totalGastos}`
 $("#total-balance").innerHTML = `${signoMonto}$${Math.abs(totalBalance)}`
+
+
+
+
+
+
+
+/////////////////// FUNCION INICIALIZAR ///////////////////
+
+const inicializar = () =>{
+    llenarSelect(categorias);
+    listaCategorias(categorias);
+    subirDatos({ categorias });
+    listaOperaciones(operaciones)
+
+    // Luego llamar la parte de reportes
+}
+
+window.onload = inicializar();
 
 
 
