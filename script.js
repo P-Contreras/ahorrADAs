@@ -306,7 +306,7 @@ const listaOperaciones = (operaciones) => {
         const categoriaArr = obtenerCategoria(categoria, categorias);
         const categoriaNombre = categoriaArr ? categoriaArr.nombre : 'Categoría no encontrada';
 
-        const fechaFormateada = new Date(fecha);
+        const fechaFormateada = new Date(fecha + 'T00:00:00-03:00');
 
         const montoSigno = tipo === "Ganancia" ? `+$` : `-$`;
         const montoClase = tipo === "Ganancia" ? "has-text-success" : "has-text-danger";
@@ -320,7 +320,7 @@ const listaOperaciones = (operaciones) => {
                 <span class="tag is-info is-light is-size-7">${categoriaNombre}</span>
             </div>
             <div class="column">
-            <span class="is-size-6">${fechaFormateada.getDate() + 1}/${fechaFormateada.getMonth() + 1}/${fechaFormateada.getFullYear()}</span>
+            <span class="is-size-6">${fechaFormateada.getDate()}/${fechaFormateada.getMonth() + 1}/${fechaFormateada.getFullYear()}</span>
             </div>
             <div class="column">
                 <span class="is-size-6 has-text-weight-bold ${montoClase} has-text-right">${montoSigno}${monto}</span>
