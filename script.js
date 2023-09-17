@@ -37,6 +37,20 @@ btnOcultarFiltros.onclick = () => {
 };
 
 
+
+/////////////////// FUNCION MOSTRAR IMG INCIAL ///////////////////
+
+const mostrarImgSinOperaciones = (idDeVistaAOcultar, idDeVistaAMostrar) =>{
+    if (operaciones.length > 0) {
+        $(`#${idDeVistaAOcultar}`).classList.add("is-hidden");
+        $(`#${idDeVistaAMostrar}`).style.display = "block";
+    } else {
+        $(`#${idDeVistaAOcultar}`).classList.remove("is-hidden");
+        $(`#${idDeVistaAMostrar}`).style.display = "none";
+    }
+}
+
+
 /////////////////// FUNCION LOCAL STORAGE ///////////////////
 
 const traerDatos = () => {
@@ -117,7 +131,6 @@ const listaCategorias = (categorias) => {
         </li>`;
         }
     };
-
 
 
 ////////////////////////// Función para obtener categoria //////////////////////////
@@ -264,6 +277,7 @@ const nuevaOperacion = () =>{
 $("#btn-agregar-op").addEventListener("click", nuevaOperacion)
 
 
+
 //////////////////////// Funcion para que la lista de operaciones se vea en el html ////////////////////////////////
 
 const listaOperaciones = (operaciones) => {
@@ -318,14 +332,12 @@ const listaOperaciones = (operaciones) => {
         </li>`
     }
 
-    if (operaciones.length > 0) {
-        $("#img-operaciones").classList.add("is-hidden");
-        $("#items-operaciones").style.display = "block";
-    } else {
-        $("#img-operaciones").classList.remove("is-hidden");
-        $("#items-operaciones").style.display = "none";
-    }
+    // Reemplaza la img inicial por la lista de operaciones
+    mostrarImgSinOperaciones("img-operaciones", "items-operaciones")
 
+
+    // Reemplaza la img inicial por el contenedor de reportes
+    mostrarImgSinOperaciones("sin-reportes", "con-reportes")
 };
 
 
@@ -448,10 +460,6 @@ $("#total-balance").innerHTML = `${signoMonto}$${Math.abs(totalBalance)}`
 
 
 
-
-
-
-
 /////////////////// FUNCION INICIALIZAR ///////////////////
 
 const inicializar = () =>{
@@ -459,7 +467,6 @@ const inicializar = () =>{
     listaCategorias(categorias);
     subirDatos({ categorias });
     listaOperaciones(operaciones)
-
     // Luego llamar la parte de reportes
 }
 
