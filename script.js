@@ -37,6 +37,20 @@ btnOcultarFiltros.onclick = () => {
 };
 
 
+
+/////////////////// FUNCION MOSTRAR IMG INCIAL ///////////////////
+
+const mostrarImgSinOperaciones = (idDeVistaAOcultar, idDeVistaAMostrar) =>{
+    if (operaciones.length > 0) {
+        $(`#${idDeVistaAOcultar}`).classList.add("is-hidden");
+        $(`#${idDeVistaAMostrar}`).style.display = "block";
+    } else {
+        $(`#${idDeVistaAOcultar}`).classList.remove("is-hidden");
+        $(`#${idDeVistaAMostrar}`).style.display = "none";
+    }
+}
+
+
 /////////////////// FUNCION LOCAL STORAGE ///////////////////
 
 const traerDatos = () => {
@@ -117,11 +131,6 @@ const listaCategorias = (categorias) => {
         </li>`;
         }
     };
-
-
-llenarSelect(categorias);
-listaCategorias(categorias);
-subirDatos({ categorias });
 
 
 ////////////////////////// Función para obtener categoria //////////////////////////
@@ -268,6 +277,7 @@ const nuevaOperacion = () =>{
 $("#btn-agregar-op").addEventListener("click", nuevaOperacion)
 
 
+
 //////////////////////// Funcion para que la lista de operaciones se vea en el html ////////////////////////////////
 
 const listaOperaciones = (operaciones) => {
@@ -296,7 +306,7 @@ const listaOperaciones = (operaciones) => {
         const categoriaArr = obtenerCategoria(categoria, categorias);
         const categoriaNombre = categoriaArr ? categoriaArr.nombre : 'Categoría no encontrada';
 
-        const fechaFormateada = new Date(fecha);
+        const fechaFormateada = new Date(fecha + 'T00:00:00-03:00');
 
         const montoSigno = tipo === "Ganancia" ? `+$` : `-$`;
         const montoClase = tipo === "Ganancia" ? "has-text-success" : "has-text-danger";
@@ -310,7 +320,7 @@ const listaOperaciones = (operaciones) => {
                 <span class="tag is-info is-light is-size-7">${categoriaNombre}</span>
             </div>
             <div class="column">
-            <span class="is-size-6">${fechaFormateada.getDate() + 1}/${fechaFormateada.getMonth() + 1}/${fechaFormateada.getFullYear()}</span>
+            <span class="is-size-6">${fechaFormateada.getDate()}/${fechaFormateada.getMonth() + 1}/${fechaFormateada.getFullYear()}</span>
             </div>
             <div class="column">
                 <span class="is-size-6 has-text-weight-bold ${montoClase} has-text-right">${montoSigno}${monto}</span>
@@ -322,17 +332,13 @@ const listaOperaciones = (operaciones) => {
         </li>`
     }
 
-    if (operaciones.length > 0) {
-        $("#img-operaciones").classList.add("is-hidden");
-        $("#items-operaciones").style.display = "block";
-    } else {
-        $("#img-operaciones").classList.remove("is-hidden");
-        $("#items-operaciones").style.display = "none";
-    }
+    // Reemplaza la img inicial por la lista de operaciones
+    mostrarImgSinOperaciones("img-operaciones", "items-operaciones")
 
+
+    // Reemplaza la img inicial por el contenedor de reportes
+    mostrarImgSinOperaciones("sin-reportes", "con-reportes")
 };
-
-listaOperaciones(operaciones)
 
 
 
@@ -451,6 +457,20 @@ const colorMonto = signoMonto !== "" ? $("#total-balance").classList.add(signoMo
 $("#monto-ganancias").innerHTML = `+$${totalGanancias}`
 $("#monto-gastos").innerHTML = `-$${totalGastos}`
 $("#total-balance").innerHTML = `${signoMonto}$${Math.abs(totalBalance)}`
+
+
+
+/////////////////// FUNCION INICIALIZAR ///////////////////
+
+const inicializar = () =>{
+    llenarSelect(categorias);
+    listaCategorias(categorias);
+    subirDatos({ categorias });
+    listaOperaciones(operaciones)
+    // Luego llamar la parte de reportes
+}
+
+window.onload = inicializar();
 
 
 
