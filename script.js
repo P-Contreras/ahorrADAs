@@ -350,8 +350,8 @@ const eliminarOperacion = (id) => {
     if (confirmarEliminacion) {
         operaciones = operaciones.filter((operacion) => operacion.id !== id);
 
-        const totalGanancias = opFiltradas(operaciones, "Ganancia");
-        const totalGastos = opFiltradas(operaciones, "Gasto");
+        const totalGanancias = operacionesFiltradas(operaciones, "Ganancia");
+        const totalGastos = operacionesFiltradas(operaciones, "Gasto");
 
         
         const totalBalance = totalGanancias - totalGastos;
@@ -434,14 +434,14 @@ const editarOperacion = (id) => {
 // //////////////////////// Funcion para filtrar y sumar segun el tipo de la operacion ////////////////////////////////
 
 
-const opFiltradas = (operaciones, tipo) => {
+const operacionesFiltradas = (operaciones, tipo) => {
     const filtroPorTipo = operaciones.filter((operacion) => operacion.tipo === tipo);
     const montoTotal = filtroPorTipo.reduce((total, operacion) => total + operacion.monto, 0);
     return montoTotal;
 };
 
-const totalGanancias = opFiltradas(operaciones, "Ganancia");
-const totalGastos = opFiltradas(operaciones, "Gasto");
+const totalGanancias = operacionesFiltradas(operaciones, "Ganancia");
+const totalGastos = operacionesFiltradas(operaciones, "Gasto");
 
 const totalBalance = totalGanancias - totalGastos;
 
@@ -458,8 +458,6 @@ $("#monto-ganancias").innerHTML = `+$${totalGanancias}`
 $("#monto-gastos").innerHTML = `-$${totalGastos}`
 $("#total-balance").innerHTML = `${signoMonto}$${Math.abs(totalBalance)}`
 
-
-
 ////////////////////////// Funcion para filtrar por tipo ////////////////////////////////
 
 
@@ -473,7 +471,6 @@ const filtrarPorTipo = (listaOperaciones, tipoOperacion) => {
 
 $("#filtro-tipo").addEventListener("change", () => aplicarFiltros());
 
-
 const filtrarPorCategoria = (listaOperaciones, tipoCategoria) => {
     if (tipoCategoria === "todas") {
         return listaOperaciones;
@@ -483,8 +480,6 @@ const filtrarPorCategoria = (listaOperaciones, tipoCategoria) => {
 };
 
 $("#filtro-categoria").addEventListener("change", () => aplicarFiltros());
-
-
 
 const ordernarPorFecha = (operaciones, orden) => {
     return [...operaciones].sort((a, b) => {
@@ -496,12 +491,7 @@ const ordernarPorFecha = (operaciones, orden) => {
     });
 };
 
-//console.log(ordernarPorFecha(operaciones, "DSC"));
-
 $("#filtro-orden").addEventListener("change", () => aplicarFiltros());
-
-//ordernarPorFecha(operaciones, "ASC");
-
 
 const aplicarFiltros = () => {
     let operacionesFiltradas = [...operaciones];
@@ -512,13 +502,12 @@ const aplicarFiltros = () => {
     let filtroOrden = $("#filtro-orden").value;
 
 
-    operacionesFiltradas = filtrarPorTipo(operacionesFiltradas, filtroTipo);
+    operacionesFiltradas = filtrarPorTipo(operacionesFiltradas, filtroTipo);     
     operacionesFiltradas = filtrarPorCategoria(operacionesFiltradas, filtroCategoria);
     operacionesFiltradas = ordernarPorFecha(operacionesFiltradas, filtroOrden);
 
     listaOperaciones(operacionesFiltradas);
 };
-
 
 
 /////////////////// FUNCION INICIALIZAR ///////////////////
