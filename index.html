@@ -104,9 +104,9 @@
                                 <div class="control">
                                     <div class="select is-fullwidth">
                                         <select id="filtro-tipo">
-                                            <option value="Todos">Todos</option>
-                                            <option value="Gasto">Gasto</option>
-                                            <option value="Ganancia">Ganancia</option>
+                                            <option>Todos</option>
+                                            <option>Gasto</option>
+                                            <option>Ganancia</option>
                                         </select>
                                     </div>
                                 </div>
@@ -134,8 +134,7 @@
                                 <div class="control">
                                     <div class="select is-fullwidth">
                                         <select id="filtro-orden">
-                                            <!-- <option disabled selected>Selecciona una opción</option> -->
-                                            <option selected value="DSC">Más reciente</option>
+                                            <option value="DSC">Más reciente</option>
                                             <option value="ASC">Menos reciente</option>
                                             <option>Mayor monto</option>
                                             <option>Menor monto</option>
@@ -281,8 +280,8 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <select id="select-tipo">
-                                    <option value="gasto">Gasto</option>
-                                    <option value="ganancia">Ganancia</option>
+                                    <option>Gasto</option>
+                                    <option>Ganancia</option>
                                 </select>
                             </div>
                         </div>
@@ -339,7 +338,7 @@
                             </div>
 
                             <!-- resumen -->
-<div id="con-reportes">
+                            <div id="con-reportes">
                             <section>
                                 <div class="m-5 mt-6 pt-4">
                                     <div class="pb-4 mb-4">
@@ -422,7 +421,7 @@
 
                             <!-- Total por categorias -->
 
-                            <section>
+                            <section id="total-por-ganancia">
                                 <div class="m-5 mt-6 pt-4">
                                     <div class="pb-4 mb-4">
                                         <h3 class="is-size-4 has-text-link has-text-weight-medium has-text-centered">
@@ -472,7 +471,7 @@
                 </div>
             </div>
         </section>
-</div>
+    </div>
         <!-- fin sección Reportes -->
 
 
@@ -501,8 +500,8 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <select id="editar-operacion-tipo">
-                                    <option value="gasto">Gasto</option>
-                                    <option value="ganancia">Ganancia</option>
+                                    <option>Gasto</option>
+                                    <option>Ganancia</option>
                                 </select>
                             </div>
                         </div>
