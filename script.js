@@ -350,8 +350,8 @@ const eliminarOperacion = (id) => {
     if (confirmarEliminacion) {
         operaciones = operaciones.filter((operacion) => operacion.id !== id);
 
-        const totalGanancias = operacionesFiltradas(operaciones, "Ganancia");
-        const totalGastos = operacionesFiltradas(operaciones, "Gasto");
+        const totalGanancias = opFiltradas(operaciones, "Ganancia");
+        const totalGastos = opFiltradas(operaciones, "Gasto");
 
         
         const totalBalance = totalGanancias - totalGastos;
@@ -434,14 +434,14 @@ const editarOperacion = (id) => {
 // //////////////////////// Funcion para filtrar y sumar segun el tipo de la operacion ////////////////////////////////
 
 
-const operacionesFiltradas = (operaciones, tipo) => {
+const opFiltradas = (operaciones, tipo) => {
     const filtroPorTipo = operaciones.filter((operacion) => operacion.tipo === tipo);
     const montoTotal = filtroPorTipo.reduce((total, operacion) => total + operacion.monto, 0);
     return montoTotal;
 };
 
-const totalGanancias = operacionesFiltradas(operaciones, "Ganancia");
-const totalGastos = operacionesFiltradas(operaciones, "Gasto");
+const totalGanancias = opFiltradas(operaciones, "Ganancia");
+const totalGastos = opFiltradas(operaciones, "Gasto");
 
 const totalBalance = totalGanancias - totalGastos;
 
@@ -457,6 +457,67 @@ const colorMonto = signoMonto !== "" ? $("#total-balance").classList.add(signoMo
 $("#monto-ganancias").innerHTML = `+$${totalGanancias}`
 $("#monto-gastos").innerHTML = `-$${totalGastos}`
 $("#total-balance").innerHTML = `${signoMonto}$${Math.abs(totalBalance)}`
+
+
+
+////////////////////////// Funcion para filtrar por tipo ////////////////////////////////
+
+
+const filtrarPorTipo = (listaOperaciones, tipoOperacion) => {
+    if (tipoOperacion === "Todos") {
+        return listaOperaciones;
+    } else {
+        return listaOperaciones.filter((operacion) => operacion.tipo === tipoOperacion);
+    }
+};
+
+$("#filtro-tipo").addEventListener("change", () => aplicarFiltros());
+
+
+const filtrarPorCategoria = (listaOperaciones, tipoCategoria) => {
+    if (tipoCategoria === "todas") {
+        return listaOperaciones;
+    } else {
+        return listaOperaciones.filter((operacion) => operacion.categoria === tipoCategoria);
+    }
+};
+
+$("#filtro-categoria").addEventListener("change", () => aplicarFiltros());
+
+
+
+const ordernarPorFecha = (operaciones, orden) => {
+    return [...operaciones].sort((a, b) => {
+    const fechaA = new Date(a.fecha);
+    const fechaB = new Date(b.fecha);
+    return orden === "ASC"
+        ? fechaA.getTime() - fechaB.getTime()
+        : fechaB.getTime() - fechaA.getTime();
+    });
+};
+
+//console.log(ordernarPorFecha(operaciones, "DSC"));
+
+$("#filtro-orden").addEventListener("change", () => aplicarFiltros());
+
+//ordernarPorFecha(operaciones, "ASC");
+
+
+const aplicarFiltros = () => {
+    let operacionesFiltradas = [...operaciones];
+
+
+    let filtroTipo = $("#filtro-tipo").value;
+    let filtroCategoria = $("#filtro-categoria").value;
+    let filtroOrden = $("#filtro-orden").value;
+
+
+    operacionesFiltradas = filtrarPorTipo(operacionesFiltradas, filtroTipo);
+    operacionesFiltradas = filtrarPorCategoria(operacionesFiltradas, filtroCategoria);
+    operacionesFiltradas = ordernarPorFecha(operacionesFiltradas, filtroOrden);
+
+    listaOperaciones(operacionesFiltradas);
+};
 
 
 
