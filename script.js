@@ -50,6 +50,15 @@ const mostrarImgSinOperaciones = (idDeVistaAOcultar, idDeVistaAMostrar) =>{
     }
 }
 
+const mostrarReportesCuandoCorresponda = (vistaAOcultar, vistaAMostrar) => {
+    if (totalGanancias > 0 && totalGastos > 0) {
+        $(`#${vistaAOcultar}`).classList.add("is-hidden");
+        $(`#${vistaAMostrar}`).style.display = "block";
+    } else {
+        $(`#${vistaAOcultar}`).classList.remove("is-hidden");
+        $(`#${vistaAMostrar}`).style.display = "none";
+    }
+};
 
 /////////////////// FUNCION LOCAL STORAGE ///////////////////
 
@@ -337,7 +346,8 @@ const listaOperaciones = (operaciones) => {
 
 
     // Reemplaza la img inicial por el contenedor de reportes
-    mostrarImgSinOperaciones("sin-reportes", "con-reportes")
+    //mostrarImgSinOperaciones("sin-reportes", "con-reportes")
+    mostrarReportesCuandoCorresponda("sin-reportes", "con-reportes");
 };
 
 
@@ -371,7 +381,7 @@ const eliminarOperacion = (id) => {
             $("#total-balance").classList.add("has-text-danger");
         }
 
-
+        actualizarReportes();
         listaOperaciones(operaciones);
         subirDatos({ operaciones });
     }
@@ -598,6 +608,8 @@ const aplicarFiltros = () => {
 
 
 //////////////////////////// REPORTES ////////////////////////////////
+
+
 const categoriasConOperaciones = categorias.map(categoriaObj => {
     const operacionPorCategoria = operaciones.filter(operacion => operacion.categoria === categoriaObj.id);
 
@@ -702,25 +714,25 @@ const calcularMesConMayorGasto = () => {
 
 //////////////////////////////////totales por categoria////////////////////
 
-const calcularTotalesPorCategoria = (operaciones) => {
-    const totales = {};
+// const calcularTotalesPorCategoria = (operaciones) => {
+//     const totales = {};
 
-    operaciones.forEach((operacion) => {
-        const { categoria, tipo, monto } = operacion;
+//     operaciones.forEach((operacion) => {
+//         const { categoria, tipo, monto } = operacion;
 
-        if (!totales[categoria]) {
-            totales[categoria] = { ganancias: 0, gastos: 0 };
-        }
+//         if (!totales[categoria]) {
+//             totales[categoria] = { ganancias: 0, gastos: 0 };
+//         }
 
-        if (tipo === 'Ganancia') {
-            totales[categoria].ganancias += monto;
-        } else if (tipo === 'Gasto') {
-            totales[categoria].gastos += monto;
-        }
-    });
+//         if (tipo === 'Ganancia') {
+//             totales[categoria].ganancias += monto;
+//         } else if (tipo === 'Gasto') {
+//             totales[categoria].gastos += monto;
+//         }
+//     });
 
-    return totales;
-};
+//     return totales;
+// };
 
 
 // Llamo a las funciones para calcular los resúmenes de mes
@@ -739,7 +751,7 @@ const actualizarReportes = () => {
     };
 
     $("#categoria-mayor-ganancia").textContent = resumenGanancia.nombre;
-$("#categoria-monto-mayor-ganancia").textContent = `${obtenerSigno("Ganancia")}$${resumenGanancia.ganancia}`;
+    $("#categoria-monto-mayor-ganancia").textContent = `${obtenerSigno("Ganancia")}$${resumenGanancia.ganancia}`;
 
     $("#categoria-mayor-gasto").textContent = resumenGasto.nombre;
     $("#categoria-monto-mayor-gasto").textContent = `${obtenerSigno("Gasto")}$${resumenGasto.gasto}`;
@@ -850,16 +862,14 @@ actualizarReportes();
 
 
 
-
-
 /////////////////// FUNCION INICIALIZAR ///////////////////
 
 const inicializar = () =>{
     llenarSelect(categorias);
     listaCategorias(categorias);
     subirDatos({ categorias });
-    listaOperaciones(operaciones)
-    // Luego llamar la parte de reportes
+    listaOperaciones(operaciones);
+    actualizarReportes(operaciones);
 }
 
 window.onload = inicializar();
