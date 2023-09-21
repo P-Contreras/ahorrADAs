@@ -510,6 +510,348 @@ const aplicarFiltros = () => {
 };
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////// REPORTES ////////////////////////////////
+const categoriasConOperaciones = categorias.map(categoriaObj => {
+    const operacionPorCategoria = operaciones.filter(operacion => operacion.categoria === categoriaObj.id);
+
+    let gasto = 0;
+    let ganancia = 0;
+
+    operacionPorCategoria.forEach(op => {
+        if (op.tipo === "Ganancia") {
+            ganancia += parseFloat(op.monto);
+        } else if (op.tipo === "Gasto") {
+            gasto += parseFloat(op.monto);
+        }
+    });
+
+    return {
+        nombre: categoriaObj.nombre,
+        ganancia,
+        gasto,
+        balance: ganancia - gasto,
+    };
+});
+
+const calcularResumen = (elemento) => {
+    const ordenado = [...categoriasConOperaciones];
+    ordenado.sort((a, b) => b[elemento] - a[elemento]);
+    return ordenado[0];
+};
+
+
+
+const resumenGanancia = calcularResumen("ganancia");
+const resumenGasto = calcularResumen("gasto");
+const resumenBalance = calcularResumen("balance");
+
+
+
+const calcularMesConMayorGanancia = () => {
+    const mesGanancia = operaciones.reduce((acumulador, operacion) => {
+        if (operacion.tipo === "Ganancia") {
+            const fecha = new Date(operacion.fecha);
+            const mes = fecha.getMonth() + 1;
+            const monto = parseFloat(operacion.monto);
+
+            if (!acumulador[mes]) {
+                acumulador[mes] = 0;
+            }
+
+            acumulador[mes] += monto;
+        }
+        return acumulador;
+    }, {});
+
+
+    let mesMayorGanancia = null;
+    let montoMayorGanancia = 0;
+
+    for (const mes in mesGanancia) {
+        if (mesGanancia[mes] > montoMayorGanancia) {
+            mesMayorGanancia = mes;
+            montoMayorGanancia = mesGanancia[mes];
+        }
+    }
+
+    return {
+        mes: mesMayorGanancia,
+        monto: montoMayorGanancia,
+    };
+};
+
+const calcularMesConMayorGasto = () => {
+    const mesGasto = operaciones.reduce((acumulador, operacion) => {
+        if (operacion.tipo === "Gasto") {
+            const fecha = new Date(operacion.fecha);
+            const mes = fecha.getMonth() + 1; 
+            const monto = parseFloat(operacion.monto);
+
+            if (!acumulador[mes]) {
+                acumulador[mes] = 0;
+            }
+
+            acumulador[mes] += monto;
+        }
+        return acumulador;
+    }, {});
+
+
+    let mesMayorGasto = null;
+    let montoMayorGasto = 0;
+
+    for (const mes in mesGasto) {
+        if (mesGasto[mes] > montoMayorGasto) {
+            mesMayorGasto = mes;
+            montoMayorGasto = mesGasto[mes];
+        }
+    }
+
+    return {
+        mes: mesMayorGasto,
+        monto: montoMayorGasto,
+    };
+};
+
+//////////////////////////////////totales por categoria////////////////////
+
+const calcularTotalesPorCategoria = (operaciones) => {
+    const totales = {};
+
+    operaciones.forEach((operacion) => {
+        const { categoria, tipo, monto } = operacion;
+
+        if (!totales[categoria]) {
+            totales[categoria] = { ganancias: 0, gastos: 0 };
+        }
+
+        if (tipo === 'Ganancia') {
+            totales[categoria].ganancias += monto;
+        } else if (tipo === 'Gasto') {
+            totales[categoria].gastos += monto;
+        }
+    });
+
+    return totales;
+};
+
+
+// Llamo a las funciones para calcular los resúmenes de mes
+const resumenMesGanancia = calcularMesConMayorGanancia();
+const resumenMesGasto = calcularMesConMayorGasto();
+
+
+const actualizarReportes = () => {
+
+    const resumenGanancia = calcularResumen("ganancia");
+    const resumenGasto = calcularResumen("gasto");
+    const resumenBalance = calcularResumen("balance");
+
+    const obtenerSigno = (tipo) => {
+        return tipo === 'Gasto' ? '-' : '+';
+    };
+
+    $("#categoria-mayor-ganancia").textContent = resumenGanancia.nombre;
+$("#categoria-monto-mayor-ganancia").textContent = `${obtenerSigno("Ganancia")}$${resumenGanancia.ganancia}`;
+
+    $("#categoria-mayor-gasto").textContent = resumenGasto.nombre;
+    $("#categoria-monto-mayor-gasto").textContent = `${obtenerSigno("Gasto")}$${resumenGasto.gasto}`;
+
+    $("#categoria-mayor-balance").textContent = resumenBalance.nombre;
+    $("#categoria-monto-mayor-balance").textContent = `$${resumenBalance.balance}`;
+
+    $("#mes-mayor-ganancia").textContent = resumenMesGanancia.mes ? `${resumenMesGanancia.mes}/2023` : "N/A";
+    $("#mes-monto-mayor-ganancia").textContent = `${obtenerSigno("Ganancia")}$${resumenGanancia.ganancia}`;
+
+    $("#mes-mayor-gasto").textContent = resumenMesGasto.mes ? `${resumenMesGasto.mes}/2023` : "N/A";
+    $("#mes-monto-mayor-gasto").textContent = `${obtenerSigno("Gasto")}$${resumenGasto.gasto}`;
+};
+
+actualizarReportes();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /////////////////// FUNCION INICIALIZAR ///////////////////
 
 const inicializar = () =>{
