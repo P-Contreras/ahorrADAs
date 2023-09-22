@@ -611,7 +611,7 @@ const aplicarFiltros = () => {
 
 
 const categoriasConOperaciones = categorias.map(categoriaObj => {
-    const operacionPorCategoria = operaciones.filter(operacion => operacion.categoria === categoriaObj.id);
+const operacionPorCategoria = operaciones.filter(operacion => operacion.categoria === categoriaObj.id);
 
     let gasto = 0;
     let ganancia = 0;
@@ -712,32 +712,61 @@ const calcularMesConMayorGasto = () => {
     };
 };
 
-//////////////////////////////////totales por categoria////////////////////
-
-// const calcularTotalesPorCategoria = (operaciones) => {
-//     const totales = {};
-
-//     operaciones.forEach((operacion) => {
-//         const { categoria, tipo, monto } = operacion;
-
-//         if (!totales[categoria]) {
-//             totales[categoria] = { ganancias: 0, gastos: 0 };
-//         }
-
-//         if (tipo === 'Ganancia') {
-//             totales[categoria].ganancias += monto;
-//         } else if (tipo === 'Gasto') {
-//             totales[categoria].gastos += monto;
-//         }
-//     });
-
-//     return totales;
-// };
-
-
 // Llamo a las funciones para calcular los resúmenes de mes
 const resumenMesGanancia = calcularMesConMayorGanancia();
 const resumenMesGasto = calcularMesConMayorGasto();
+
+
+
+//////////////////////////////////totales por categoria////////////////////
+const categoriasUnicas = [...new Set(operaciones.map((operacion) => operacion.categoria))];
+
+const totales = {};
+
+
+categoriasUnicas.forEach((categoria) => {
+    totales[categoria] = {
+        ganancias: 0,
+        gastos: 0,
+        balance: 0,
+    };
+});
+
+
+operaciones.forEach((operacion) => {
+    const { categoria, tipo, monto } = operacion;
+
+    if (categoriasUnicas.includes(categoria)) {
+        if (tipo === 'Ganancia') {
+            totales[categoria].ganancias += monto;
+        } else if (tipo === 'Gasto') {
+            totales[categoria].gastos += monto;
+        }
+
+        // Calcula el balance
+        totales[categoria].balance = totales[categoria].ganancias - totales[categoria].gastos;
+    }
+});
+
+
+categoriasUnicas.forEach((categoriaId) => {
+    const categoria = categorias.find((c) => c.id === categoriaId);
+
+    if (categoria) {
+        const total = totales[categoriaId];
+
+        const filaHTML = `
+            <div class="columns has-text-weight-medium pt-1 pb-1">
+                <div class="column is-3 has-text-centered">${categoria.nombre}</div>
+                <div class="column is-3 has-text-centered has-text-success">+${total.ganancias.toFixed(2)}</div>
+                <div class="column is-3 has-text-centered has-text-danger">-${total.gastos.toFixed(2)}</div>
+                <div class="column is-3 has-text-centered">${total.balance.toFixed(2)}</div>
+            </div>
+        `;
+
+        $("#total-por-ganancia").innerHTML += filaHTML;
+    }
+});
 
 
 const actualizarReportes = () => {
