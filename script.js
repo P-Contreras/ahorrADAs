@@ -451,9 +451,8 @@ const editarOperacion = (id) => {
     const totalGastos = operacionesFiltradas(operacionesActualizadas, "Gasto");
     const totalBalance = totalGanancias - totalGastos;
 
-    $("#monto-ganancias").innerHTML = `+$${totalGanancias}`;
-    $("#monto-gastos").innerHTML = `-$${totalGastos}`;
-    $("#total-balance").innerHTML = `${signoMonto}$${Math.abs(totalBalance)}`;
+
+    actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
 
 
     listaOperaciones(traerDatos().operaciones);
@@ -477,15 +476,14 @@ const totalBalance = totalGanancias - totalGastos;
 
 // //////////////////////// Funcion para que todo se vea en el html ////////////////////////////////
 
+const actualizarTotalesEnHTML = (totalGanancias, totalGastos, totalBalance) => {
+    const signoMonto = totalBalance > 0 ? '+' : totalBalance < 0 ? '-' : '';
+    const montoAbsoluto = Math.abs(totalBalance);
 
-const signoMonto = totalBalance > 0 ? `+` : totalBalance < 0 ? `-` : ``;
-
-const colorMonto = signoMonto !== "" ? $("#total-balance").classList.add(signoMonto === "+" ? "has-text-success" : "has-text-danger") : "";
-
-
-$("#monto-ganancias").innerHTML = `+$${totalGanancias}`
-$("#monto-gastos").innerHTML = `-$${totalGastos}`
-$("#total-balance").innerHTML = `${signoMonto}$${Math.abs(totalBalance)}`
+    $("#monto-ganancias").innerHTML = `+$${totalGanancias}`;
+    $("#monto-gastos").innerHTML = `-$${totalGastos}`;
+    $("#total-balance").innerHTML = `${signoMonto}$${montoAbsoluto}`;
+};
 
 ////////////////////////// Funcion para filtrar por tipo ////////////////////////////////
 
@@ -1006,6 +1004,7 @@ const inicializar = () => {
     subirDatos({ categorias });
     listaOperaciones(operaciones);
     actualizarReportes();
+    actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
 }
 
 window.onload = inicializar();
