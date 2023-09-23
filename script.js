@@ -39,19 +39,23 @@ btnOcultarFiltros.onclick = () => {
 
 
 /////////////////// FUNCION MOSTRAR IMG INCIAL ///////////////////
-
 const mostrarImgSinOperaciones = (idDeVistaAOcultar, idDeVistaAMostrar) => {
-    if (traerDatos().operaciones.length > 0) {
-        $(`#${idDeVistaAOcultar}`).classList.add("is-hidden");
-        $(`#${idDeVistaAMostrar}`).style.display = "block";
-    } else {
+    if (!traerDatos().operaciones || traerDatos().operaciones.length === 0) {
         $(`#${idDeVistaAOcultar}`).classList.remove("is-hidden");
         $(`#${idDeVistaAMostrar}`).style.display = "none";
+    } else {
+        $(`#${idDeVistaAOcultar}`).classList.add("is-hidden");
+        $(`#${idDeVistaAMostrar}`).style.display = "block";
     }
 };
 
 const mostrarReportesCuandoCorresponda = (vistaAOcultar, vistaAMostrar) => {
-    if (totalGanancias > 0 && totalGastos > 0) {
+    const operacionesGanancia = operaciones.filter(operacion => operacion.tipo === 'Ganancia');
+    const operacionesGasto = operaciones.filter(operacion => operacion.tipo === 'Gasto');
+    const hayGanancia = operacionesGanancia.length > 0;
+    const hayGasto = operacionesGasto.length > 0;
+
+    if (hayGanancia && hayGasto) {
         $(`#${vistaAOcultar}`).classList.add("is-hidden");
         $(`#${vistaAMostrar}`).style.display = "block";
     } else {
@@ -66,11 +70,9 @@ const traerDatos = () => {
     return JSON.parse(localStorage.getItem("datos"));
 };
 
-
 const subirDatos = (datos) => {
     const datosActualizados = traerDatos() || {};
     localStorage.setItem("datos", JSON.stringify({ ...datosActualizados, ...datos }));
-    //localStorage.setItem("categorias", JSON.stringify(categorias));
 };
 
 
@@ -164,8 +166,7 @@ botonAgregarCategoria.addEventListener("click", () => {
     // Agrega la nueva categoría al array de categorías
     categorias.push(nuevaCategoria);
 
-    // Actualiza el almacenamiento local (si es necesario)
-    //subirDatos({ categorias });
+    // Actualiza el almacenamiento local
     subirDatos({ categorias: categorias });
 
     // Actualiza la lista de categorías en el HTML
@@ -247,9 +248,7 @@ const eliminarCategoria = (id) => {
         listaCategorias(categorias);
         llenarSelect(categorias);
     }
-
 };
-//////////agregar funcion de eliminarOperacionPorCategoria y recibe por parametro el id de esa categoria
 
 //////////////////////// funcion CANCELAR OPERACION ////////////////////////////////
 const cancelarNuevaOp = () => {
@@ -277,7 +276,6 @@ const nuevaOperacion = () => {
         fecha: $('#input-fecha').value,
     }
 
-    //operaciones.push(operacion);
 
     subirDatos({ operaciones: [...traerOperaciones(), operacion] });
 
@@ -347,14 +345,13 @@ const listaOperaciones = (operaciones) => {
         };
 
         $("#items-operaciones").appendChild(liOperacion);
-    };
+};
 
     // Reemplaza la img inicial por la lista de operaciones
     mostrarImgSinOperaciones("img-operaciones", "items-operaciones");
 
 
     // Reemplaza la img inicial por el contenedor de reportes
-    //mostrarImgSinOperaciones("sin-reportes", "con-reportes")
     mostrarReportesCuandoCorresponda("sin-reportes", "con-reportes");
 };
 
@@ -398,7 +395,6 @@ const eliminarOperacion = (id) => {
     }
 };
 
-
 //////////////////////// Funcion para EDITAR operacion ////////////////////////////////
 
 const obtenerOperacion = (idOperacion) => {
@@ -427,15 +423,13 @@ const showEditOperation = (id) => {
 
     // Funcionalidad del boton editar
     $("#btn-editar-op").onclick = () => editarOperacion(id);
-}
+};
 
 
 // //////////////////////// Funcion para guardar la edicion ////////////////////////////////
 
 const editarOperacion = (id) => {
-    console.log("hola, me ejecute", id);
     const operacionAEditar = obtenerOperacion(id);
-    console.log(operacionAEditar);
     if (!operacionAEditar) {
         console.error("La operación no se encontró.");
         return;
@@ -450,6 +444,13 @@ const editarOperacion = (id) => {
     const operacionesActualizadas = traerOperaciones().map(operacion => operacion.id === id ? {...operacionAEditar} : operacion);
 
     subirDatos({ operaciones: operacionesActualizadas });
+
+    //variables que calculan el balance
+    const totalGanancias = operacionesFiltradasPorTipo(operacionesActualizadas, "Ganancia");
+    const totalGastos = operacionesFiltradas(operacionesActualizadas, "Gasto");
+    const totalBalance = totalGanancias - totalGastos;
+
+    actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
     listaOperaciones(traerDatos().operaciones);
     showVista("seccion-balance");
 };
@@ -458,29 +459,27 @@ const editarOperacion = (id) => {
 // //////////////////////// Funcion para filtrar y sumar segun el tipo de la operacion ////////////////////////////////
 
 
-const operacionesFiltradas = (operaciones, tipo) => {
+const operacionesFiltradasPorTipo = (operaciones, tipo) => {
     const filtroPorTipo = operaciones.filter((operacion) => operacion.tipo === tipo);
     const montoTotal = filtroPorTipo.reduce((total, operacion) => total + operacion.monto, 0);
     return montoTotal;
 };
 
-const totalGanancias = operacionesFiltradas(operaciones, "Ganancia");
-const totalGastos = operacionesFiltradas(operaciones, "Gasto");
-
+const totalGanancias = operacionesFiltradasPorTipo(operaciones, "Ganancia");
+const totalGastos = operacionesFiltradasPorTipo(operaciones, "Gasto");
 const totalBalance = totalGanancias - totalGastos;
 
 
 // //////////////////////// Funcion para que todo se vea en el html ////////////////////////////////
 
+const actualizarTotalesEnHTML = (totalGanancias, totalGastos, totalBalance) => {
+    const signoMonto = totalBalance > 0 ? '+' : totalBalance < 0 ? '-' : '';
+    const montoAbsoluto = Math.abs(totalBalance);
 
-const signoMonto = totalBalance > 0 ? `+` : totalBalance < 0 ? `-` : ``;
-
-const colorMonto = signoMonto !== "" ? $("#total-balance").classList.add(signoMonto === "+" ? "has-text-success" : "has-text-danger") : "";
-
-
-$("#monto-ganancias").innerHTML = `+$${totalGanancias}`
-$("#monto-gastos").innerHTML = `-$${totalGastos}`
-$("#total-balance").innerHTML = `${signoMonto}$${Math.abs(totalBalance)}`
+    $("#monto-ganancias").innerHTML = `+$${totalGanancias}`;
+    $("#monto-gastos").innerHTML = `-$${totalGastos}`;
+    $("#total-balance").innerHTML = `${signoMonto}$${montoAbsoluto}`;
+};
 
 ////////////////////////// Funcion para filtrar por tipo ////////////////////////////////
 
@@ -731,56 +730,68 @@ const resumenMesGanancia = calcularMesConMayorGanancia();
 const resumenMesGasto = calcularMesConMayorGasto();
 
 
-
 //////////////////////////////////totales por categoria////////////////////
-const categoriasUnicas = [...new Set(operaciones.map((operacion) => operacion.categoria))];
 
-const totales = {};
+const inicializarTotales = (categoriasUnicas) => {
+    return categoriasUnicas.reduce((totales, categoria) => {
+        totales[categoria] = {
+            ganancias: 0,
+            gastos: 0,
+            balance: 0,
+        };
+        return totales;
+    }, {});
+};
 
+// Función para calcular los totales
+const calcularTotales = (totales, operaciones) => {
+    operaciones.forEach((operacion) => {
+        const { categoria, tipo, monto } = operacion;
 
-categoriasUnicas.forEach((categoria) => {
-    totales[categoria] = {
-        ganancias: 0,
-        gastos: 0,
-        balance: 0,
-    };
-});
+        if (totales.hasOwnProperty(categoria)) {
+            if (tipo === 'Ganancia') {
+                totales[categoria].ganancias += monto;
+            } else if (tipo === 'Gasto') {
+                totales[categoria].gastos += monto;
+            }
 
-
-operaciones.forEach((operacion) => {
-    const { categoria, tipo, monto } = operacion;
-
-    if (categoriasUnicas.includes(categoria)) {
-        if (tipo === 'Ganancia') {
-            totales[categoria].ganancias += monto;
-        } else if (tipo === 'Gasto') {
-            totales[categoria].gastos += monto;
+            totales[categoria].balance = totales[categoria].ganancias - totales[categoria].gastos;
         }
+    });
 
+    return totales;
+};
 
-        totales[categoria].balance = totales[categoria].ganancias - totales[categoria].gastos;
-    }
-});
+// Función para generar la fila HTML
+const generarFilaHTML = (categoria, total) => {
+    return `
+        <div class="columns has-text-weight-medium pt-1 pb-1">
+            <div class="column is-3 has-text-centered">${categoria.nombre}</div>
+            <div class="column is-3 has-text-centered has-text-success">+${total.ganancias.toFixed(2)}</div>
+            <div class="column is-3 has-text-centered has-text-danger">-${total.gastos.toFixed(2)}</div>
+            <div class="column is-3 has-text-centered">${total.balance.toFixed(2)}</div>
+        </div>
+    `;
+};
 
+// Función para procesar y mostrar los totales
+const procesarYMostrarTotales = (operaciones, categorias) => {
+    const categoriasUnicas = [...new Set(operaciones.map((operacion) => operacion.categoria))];
+    const totales = inicializarTotales(categoriasUnicas);
+    const totalesFinales = calcularTotales(totales, operaciones);
 
-categoriasUnicas.forEach((categoriaId) => {
-    const categoria = categorias.find((c) => c.id === categoriaId);
+    categoriasUnicas.forEach((categoriaId) => {
+        const categoria = categorias.find((c) => c.id === categoriaId);
 
-    if (categoria) {
-        const total = totales[categoriaId];
+        if (categoria) {
+            const total = totales[categoriaId];
+            const filaHTML = generarFilaHTML(categoria, total);
+            $("#total-por-ganancia").innerHTML += filaHTML;
+        }
+    });
+};
 
-        const filaHTML = `
-            <div class="columns has-text-weight-medium pt-1 pb-1">
-                <div class="column is-3 has-text-centered">${categoria.nombre}</div>
-                <div class="column is-3 has-text-centered has-text-success">+${total.ganancias.toFixed(2)}</div>
-                <div class="column is-3 has-text-centered has-text-danger">-${total.gastos.toFixed(2)}</div>
-                <div class="column is-3 has-text-centered">${total.balance.toFixed(2)}</div>
-            </div>
-        `;
-
-        $("#total-por-ganancia").innerHTML += filaHTML;
-    }
-});
+procesarYMostrarTotales(operaciones, categorias);
 
 ///////////////////////////totales por mes////////////////////////////
 
@@ -855,10 +866,9 @@ const mostrarTotalesPorMesEnHTML = () => {
     }
 };
 
-// Llama a la función para mostrar los totales por mes
 mostrarTotalesPorMesEnHTML();
 
-////////////////////funcion para actualizar reporte/////////////////////
+////////////////////funcion para actualizar resumen de reporte/////////////////////
 
 const actualizarReportes = () => {
 
@@ -979,17 +989,15 @@ actualizarReportes();
 
 
 
-
-
-
 /////////////////// FUNCION INICIALIZAR ///////////////////
-/////aca deberian ir todas las que pinten en el HTML
+
 const inicializar = () => {
     llenarSelect(categorias);
     listaCategorias(categorias);
     subirDatos({ categorias });
     listaOperaciones(operaciones);
-    actualizarReportes(operaciones);
+    actualizarReportes();
+    actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
 }
 
 window.onload = inicializar();
