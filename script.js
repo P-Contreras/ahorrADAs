@@ -39,19 +39,23 @@ btnOcultarFiltros.onclick = () => {
 
 
 /////////////////// FUNCION MOSTRAR IMG INCIAL ///////////////////
-
 const mostrarImgSinOperaciones = (idDeVistaAOcultar, idDeVistaAMostrar) => {
-    if (traerDatos().operaciones.length > 0) {
-        $(`#${idDeVistaAOcultar}`).classList.add("is-hidden");
-        $(`#${idDeVistaAMostrar}`).style.display = "block";
-    } else {
+    if (!traerDatos().operaciones || traerDatos().operaciones.length === 0) {
         $(`#${idDeVistaAOcultar}`).classList.remove("is-hidden");
         $(`#${idDeVistaAMostrar}`).style.display = "none";
+    } else {
+        $(`#${idDeVistaAOcultar}`).classList.add("is-hidden");
+        $(`#${idDeVistaAMostrar}`).style.display = "block";
     }
 };
 
 const mostrarReportesCuandoCorresponda = (vistaAOcultar, vistaAMostrar) => {
-    if (totalGanancias > 0 && totalGastos > 0) {
+    const operacionesGanancia = operaciones.filter(operacion => operacion.tipo === 'Ganancia');
+    const operacionesGasto = operaciones.filter(operacion => operacion.tipo === 'Gasto');
+    const hayGanancia = operacionesGanancia.length > 0;
+    const hayGasto = operacionesGasto.length > 0;
+
+    if (hayGanancia && hayGasto) {
         $(`#${vistaAOcultar}`).classList.add("is-hidden");
         $(`#${vistaAMostrar}`).style.display = "block";
     } else {
@@ -66,11 +70,9 @@ const traerDatos = () => {
     return JSON.parse(localStorage.getItem("datos"));
 };
 
-
 const subirDatos = (datos) => {
     const datosActualizados = traerDatos() || {};
     localStorage.setItem("datos", JSON.stringify({ ...datosActualizados, ...datos }));
-    //localStorage.setItem("categorias", JSON.stringify(categorias));
 };
 
 
@@ -164,8 +166,7 @@ botonAgregarCategoria.addEventListener("click", () => {
     // Agrega la nueva categoría al array de categorías
     categorias.push(nuevaCategoria);
 
-    // Actualiza el almacenamiento local (si es necesario)
-    //subirDatos({ categorias });
+    // Actualiza el almacenamiento local
     subirDatos({ categorias: categorias });
 
     // Actualiza la lista de categorías en el HTML
@@ -247,7 +248,6 @@ const eliminarCategoria = (id) => {
         listaCategorias(categorias);
         llenarSelect(categorias);
     }
-
 };
 //////////agregar funcion de eliminarOperacionPorCategoria y recibe por parametro el id de esa categoria
 
@@ -277,7 +277,6 @@ const nuevaOperacion = () => {
         fecha: $('#input-fecha').value,
     }
 
-    //operaciones.push(operacion);
 
     subirDatos({ operaciones: [...traerOperaciones(), operacion] });
 
@@ -354,7 +353,6 @@ const listaOperaciones = (operaciones) => {
 
 
     // Reemplaza la img inicial por el contenedor de reportes
-    //mostrarImgSinOperaciones("sin-reportes", "con-reportes")
     mostrarReportesCuandoCorresponda("sin-reportes", "con-reportes");
 };
 
@@ -398,7 +396,6 @@ const eliminarOperacion = (id) => {
     }
 };
 
-
 //////////////////////// Funcion para EDITAR operacion ////////////////////////////////
 
 const obtenerOperacion = (idOperacion) => {
@@ -427,15 +424,13 @@ const showEditOperation = (id) => {
 
     // Funcionalidad del boton editar
     $("#btn-editar-op").onclick = () => editarOperacion(id);
-}
+};
 
 
 // //////////////////////// Funcion para guardar la edicion ////////////////////////////////
 
 const editarOperacion = (id) => {
-    console.log("hola, me ejecute", id);
     const operacionAEditar = obtenerOperacion(id);
-    console.log(operacionAEditar);
     if (!operacionAEditar) {
         console.error("La operación no se encontró.");
         return;
@@ -450,6 +445,17 @@ const editarOperacion = (id) => {
     const operacionesActualizadas = traerOperaciones().map(operacion => operacion.id === id ? {...operacionAEditar} : operacion);
 
     subirDatos({ operaciones: operacionesActualizadas });
+
+    //variables que calculan el balance
+    const totalGanancias = operacionesFiltradas(operacionesActualizadas, "Ganancia");
+    const totalGastos = operacionesFiltradas(operacionesActualizadas, "Gasto");
+    const totalBalance = totalGanancias - totalGastos;
+
+    $("#monto-ganancias").innerHTML = `+$${totalGanancias}`;
+    $("#monto-gastos").innerHTML = `-$${totalGastos}`;
+    $("#total-balance").innerHTML = `${signoMonto}$${Math.abs(totalBalance)}`;
+
+
     listaOperaciones(traerDatos().operaciones);
     showVista("seccion-balance");
 };
@@ -466,7 +472,6 @@ const operacionesFiltradas = (operaciones, tipo) => {
 
 const totalGanancias = operacionesFiltradas(operaciones, "Ganancia");
 const totalGastos = operacionesFiltradas(operaciones, "Gasto");
-
 const totalBalance = totalGanancias - totalGastos;
 
 
@@ -731,37 +736,48 @@ const resumenMesGanancia = calcularMesConMayorGanancia();
 const resumenMesGasto = calcularMesConMayorGasto();
 
 
-
 //////////////////////////////////totales por categoria////////////////////
+const inicializarTotales = (categoriasUnicas) => {
+    const totales = {};
+
+    categoriasUnicas.forEach((categoria) => {
+        totales[categoria] = {
+            ganancias: 0,
+            gastos: 0,
+            balance: 0,
+        };
+    });
+
+    return totales;
+};
+
+// Función para calcular los totales
+const calcularTotales = (totales, operaciones) => {
+    operaciones.forEach((operacion) => {
+        const { categoria, tipo, monto } = operacion;
+
+        if (totales.hasOwnProperty(categoria)) {
+            if (tipo === 'Ganancia') {
+                totales[categoria].ganancias += monto;
+            } else if (tipo === 'Gasto') {
+                totales[categoria].gastos += monto;
+            }
+
+            totales[categoria].balance = totales[categoria].ganancias - totales[categoria].gastos;
+        }
+    });
+
+    return totales;
+};
+
+// Obtén las categorías únicas de las operaciones
 const categoriasUnicas = [...new Set(operaciones.map((operacion) => operacion.categoria))];
 
-const totales = {};
+// Inicializa los totales
+const totales = inicializarTotales(categoriasUnicas);
 
-
-categoriasUnicas.forEach((categoria) => {
-    totales[categoria] = {
-        ganancias: 0,
-        gastos: 0,
-        balance: 0,
-    };
-});
-
-
-operaciones.forEach((operacion) => {
-    const { categoria, tipo, monto } = operacion;
-
-    if (categoriasUnicas.includes(categoria)) {
-        if (tipo === 'Ganancia') {
-            totales[categoria].ganancias += monto;
-        } else if (tipo === 'Gasto') {
-            totales[categoria].gastos += monto;
-        }
-
-
-        totales[categoria].balance = totales[categoria].ganancias - totales[categoria].gastos;
-    }
-});
-
+// Calcula los totales
+const totalesFinales = calcularTotales(totales, operaciones);
 
 categoriasUnicas.forEach((categoriaId) => {
     const categoria = categorias.find((c) => c.id === categoriaId);
@@ -989,7 +1005,7 @@ const inicializar = () => {
     listaCategorias(categorias);
     subirDatos({ categorias });
     listaOperaciones(operaciones);
-    actualizarReportes(operaciones);
+    actualizarReportes();
 }
 
 window.onload = inicializar();
