@@ -446,7 +446,7 @@ const editarOperacion = (id) => {
     subirDatos({ operaciones: operacionesActualizadas });
 
     //variables que calculan el balance
-    const totalGanancias = operacionesFiltradas(operacionesActualizadas, "Ganancia");
+    const totalGanancias = operacionesFiltradasPorTipo(operacionesActualizadas, "Ganancia");
     const totalGastos = operacionesFiltradas(operacionesActualizadas, "Gasto");
     const totalBalance = totalGanancias - totalGastos;
 
@@ -459,14 +459,14 @@ const editarOperacion = (id) => {
 // //////////////////////// Funcion para filtrar y sumar segun el tipo de la operacion ////////////////////////////////
 
 
-const operacionesFiltradas = (operaciones, tipo) => {
+const operacionesFiltradasPorTipo = (operaciones, tipo) => {
     const filtroPorTipo = operaciones.filter((operacion) => operacion.tipo === tipo);
     const montoTotal = filtroPorTipo.reduce((total, operacion) => total + operacion.monto, 0);
     return montoTotal;
 };
 
-const totalGanancias = operacionesFiltradas(operaciones, "Ganancia");
-const totalGastos = operacionesFiltradas(operaciones, "Gasto");
+const totalGanancias = operacionesFiltradasPorTipo(operaciones, "Ganancia");
+const totalGastos = operacionesFiltradasPorTipo(operaciones, "Gasto");
 const totalBalance = totalGanancias - totalGastos;
 
 
