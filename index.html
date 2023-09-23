@@ -162,7 +162,8 @@
 
                             <!-- Imagen inicial -->
                             <div>
-                                <div class="is-flex is-flex-direction-column is-align-items-center" id="img-operaciones">
+                                <div class="is-flex is-flex-direction-column is-align-items-center"
+                                    id="img-operaciones">
                                     <figure class="image wallet">
                                         <img src="img/wallet.png">
                                     </figure>
@@ -171,7 +172,7 @@
                                     <p class="subtitle is-size-6">Cambia los filtros o agrega operaciones</p>
                                 </div>
                             </div>
-                            
+
                             <!-- Lista de Operaciones -->
                             <div>
                                 <ul class="is-fullwidth is-hoverable" id="items-operaciones">
@@ -339,114 +340,116 @@
 
                             <!-- resumen -->
                             <div id="con-reportes">
-                            <section>
-                                <div class="m-5 mt-6 pt-4">
-                                    <div class="pb-4 mb-4">
-                                        <h3 class="is-size-4 has-text-link has-text-weight-medium has-text-centered">
-                                            Resumen
-                                        </h3>
+                                <section>
+                                    <div class="m-5 mt-6 pt-4">
+                                        <div class="pb-4 mb-4">
+                                            <h3
+                                                class="is-size-4 has-text-link has-text-weight-medium has-text-centered">
+                                                Resumen
+                                            </h3>
+                                        </div>
+
+                                        <!-- categoria con mayor ganancia -->
+
+                                        <div class="columns pb-1 is-align-items-center">
+                                            <div class="column has-text-weight-medium has-text-left is-8">
+                                                Categoría con mayor ganancia
+                                            </div>
+                                            <div class="column is-1 tag is-info is-light has-text-left p-4"
+                                                id="categoria-mayor-ganancia">
+                                            </div>
+                                            <div class="column is-3 has-text-weight-bold has-text-success has-text-right"
+                                                id="categoria-monto-mayor-ganancia"> +$0
+                                            </div>
+                                        </div>
+
+                                        <!-- mayor gasto -->
+
+                                        <div class="columns pb-1 is-align-items-center">
+                                            <div class="column has-text-weight-medium has-text-left is-8">
+                                                Categoría con mayor gasto
+                                            </div>
+                                            <div class="column is-1 tag is-info is-light has-text-left has p-4"
+                                                id="categoria-mayor-gasto">
+                                            </div>
+                                            <div class="column is-3 has-text-weight-bold has-text-danger has-text-right"
+                                                id="categoria-monto-mayor-gasto">
+                                            </div>
+                                        </div>
+
+                                        <!-- mayor balance -->
+
+                                        <div class="columns pb-1 is-align-items-center">
+                                            <div class="column has-text-weight-medium has-text-left is-8">
+                                                Categoría con mayor balance
+                                            </div>
+                                            <div class="column is-1 tag is-info is-light has-text-left p-4"
+                                                id="categoria-mayor-balance">
+                                            </div>
+                                            <div class="column is-3 has-text-weight-bold has-text-right"
+                                                id="categoria-monto-mayor-balance"> +$0
+                                            </div>
+                                        </div>
+
+                                        <!-- Mes mayor ganancia -->
+
+                                        <div class="columns pb-1 is-align-items-center">
+                                            <div class="column has-text-weight-medium has-text-left is-6">
+                                                Mes con mayor ganancia
+                                            </div>
+                                            <div class="column is-3 has-text-right" id="mes-mayor-ganancia">
+                                                27/08/2023
+                                            </div>
+                                            <div class="column is-3 has-text-weight-bold has-text-success has-text-right"
+                                                id="mes-monto-mayor-ganancia"> +$0
+                                            </div>
+                                        </div>
+
+                                        <!-- Mes mayor gasto -->
+
+                                        <div class="columns pb-1 is-align-items-center">
+                                            <div class="column has-text-weight-medium has-text-left is-6">
+                                                Mes con mayor gasto
+                                            </div>
+                                            <div class="column is-3 has-text-right" id="mes-mayor-gasto">
+                                                27/08/2023
+                                            </div>
+                                            <div class="column is-3 has-text-weight-bold has-text-success has-text-right has-text-danger"
+                                                id="mes-monto-mayor-gasto"> +$0
+                                            </div>
+                                        </div>
                                     </div>
+                                </section>
 
-                                    <!-- categoria con mayor ganancia -->
+                                <!-- Total por categorias -->
 
-                                    <div class="columns pb-1 is-align-items-center">
-                                        <div class="column has-text-weight-medium has-text-left is-8">
-                                            Categoría con mayor ganancia
+                                <section id="total-por-ganancia">
+                                    <div class="m-5 mt-6 pt-4">
+                                        <div class="pb-4 mb-4">
+                                            <h3
+                                                class="is-size-4 has-text-link has-text-weight-medium has-text-centered">
+                                                Totales por categorías
+                                            </h3>
                                         </div>
-                                        <div class="column is-1 tag is-info is-light has-text-left p-4"
-                                            id="categoria-mayor-ganancia">
+                                        <div class="columns has-text-weight-medium">
+                                            <div class="column has-text-centered">Categoría</div>
+                                            <div class="column has-text-centered is-3">Ganancias</div>
+                                            <div class="column has-text-centered is-3">Gastos</div>
+                                            <div class="column has-text-centered is-3">Balance</div>
                                         </div>
-                                        <div class="column is-3 has-text-weight-bold has-text-success has-text-right"
-                                            id="categoria-monto-mayor-ganancia"> +$0
+                                        <div class="columns has-text-weight-medium pt-1 pb-1">
+                                            <div class="column is-3 has-text-left"></div>
+                                            <div class="column is-3 has-text-left has-text-success"></div>
+                                            <div class="column is-3 has-text-left has-text-danger"></div>
+                                            <div class="column is-3 has-text-left"></div>
                                         </div>
                                     </div>
+                                </section>
 
-                                    <!-- mayor gasto -->
+                                <!-- total por mes  -->
 
-                                    <div class="columns pb-1 is-align-items-center">
-                                        <div class="column has-text-weight-medium has-text-left is-8">
-                                            Categoría con mayor gasto
-                                        </div>
-                                        <div class="column is-1 tag is-info is-light has-text-left has p-4"
-                                            id="categoria-mayor-gasto">
-                                        </div>
-                                        <div class="column is-3 has-text-weight-bold has-text-danger has-text-right"
-                                            id="categoria-monto-mayor-gasto">
-                                        </div>
-                                    </div>
-
-                                    <!-- mayor balance -->
-
-                                    <div class="columns pb-1 is-align-items-center">
-                                        <div class="column has-text-weight-medium has-text-left is-8">
-                                            Categoría con mayor balance
-                                        </div>
-                                        <div class="column is-1 tag is-info is-light has-text-left p-4"
-                                            id="categoria-mayor-balance">
-                                        </div>
-                                        <div class="column is-3 has-text-weight-bold has-text-right"
-                                            id="categoria-monto-mayor-balance"> +$0
-                                        </div>
-                                    </div>
-
-                                    <!-- Mes mayor ganancia -->
-
-                                    <div class="columns pb-1 is-align-items-center">
-                                        <div class="column has-text-weight-medium has-text-left is-6">
-                                            Mes con mayor ganancia
-                                        </div>
-                                        <div class="column is-3 has-text-right" id="mes-mayor-ganancia">
-                                            27/08/2023
-                                        </div>
-                                        <div class="column is-3 has-text-weight-bold has-text-success has-text-right"
-                                            id="mes-monto-mayor-ganancia"> +$0
-                                        </div>
-                                    </div>
-
-                                    <!-- Mes mayor gasto -->
-
-                                    <div class="columns pb-1 is-align-items-center">
-                                        <div class="column has-text-weight-medium has-text-left is-6">
-                                            Mes con mayor gasto
-                                        </div>
-                                        <div class="column is-3 has-text-right" id="mes-mayor-gasto">
-                                            27/08/2023
-                                        </div>
-                                        <div class="column is-3 has-text-weight-bold has-text-success has-text-right has-text-danger"
-                                            id="mes-monto-mayor-gasto"> +$0
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-
-                            <!-- Total por categorias -->
-
-                            <section id="total-por-ganancia">
-                                <div class="m-5 mt-6 pt-4">
-                                    <div class="pb-4 mb-4">
-                                        <h3 class="is-size-4 has-text-link has-text-weight-medium has-text-centered">
-                                            Totales por categorías
-                                        </h3>
-                                    </div>
-                                    <div class="columns has-text-weight-medium">
-                                        <div class="column has-text-centered">Categoría</div>
-                                        <div class="column has-text-centered is-3">Ganancias</div>
-                                        <div class="column has-text-centered is-3">Gastos</div>
-                                        <div class="column has-text-centered is-3">Balance</div>
-                                    </div>
-                                    <div class="columns has-text-weight-medium pt-1 pb-1">
-                                        <div class="column is-3 has-text-left"></div>
-                                        <div class="column is-3 has-text-left has-text-success"></div>
-                                        <div class="column is-3 has-text-left has-text-danger"></div>
-                                        <div class="column is-3 has-text-left"></div>
-                                    </div>
-                                </div>
-                            </section>
-
-                            <!-- total por mes  -->
-
-                            <section id="total-por-mes">
-                                <!-- <div class="m-5 mt-6 pt-6">
+                                <section id="total-por-mes">
+                                    <!-- <div class="m-5 mt-6 pt-6">
                                     <div class="mb-4 pb-4">
                                         <h3 class="is-size-4 has-text-link has-text-weight-medium has-text-centered">
                                             Totales por mes
@@ -465,13 +468,14 @@
                                         <div class="column is-3 has-text-right">$0</div>
                                     </div>
                                 </div> -->
-                            </section>
+                                </section>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-    </div>
+        
         <!-- fin sección Reportes -->
 
 

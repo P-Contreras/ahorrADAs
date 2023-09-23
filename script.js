@@ -312,7 +312,8 @@ const listaOperaciones = (operaciones) => {
     // Operaciones
     for (let { id, descripcion, categoria, fecha, monto, tipo } of operaciones) {
         const liOperacion = document.createElement("li");
-        liOperacion.classList.add("columns", "is-vcentered")
+        liOperacion.classList.add("columns", "is-vcentered");
+
         const categoriaArr = obtenerCategoria(categoria, categorias);
         const categoriaNombre = categoriaArr ? categoriaArr.nombre : 'Categoría no encontrada';
 
@@ -336,12 +337,17 @@ const listaOperaciones = (operaciones) => {
             </div>
             <div class="column">
                 <a id="editt-btn" class="mr-4 edit-link is-size-7">Editar</a>
-                <a onclick="eliminarOperacion" id="delete-btn" class="mr-4 edit-link is-size-7">Eliminar</a>
+                <a id="delete-btn" class="mr-4 edit-link is-size-7">Eliminar</a>
             </div>`
 
         let update = liOperacion.querySelector("#editt-btn")
         update.onclick = () => {
             showEditOperation(id)
+        };
+
+        let eliminar = liOperacion.querySelector("#delete-btn")
+        eliminar.onclick = () => {
+            eliminarOperacion(id)
         };
 
         $("#items-operaciones").appendChild(liOperacion);
@@ -352,7 +358,7 @@ const listaOperaciones = (operaciones) => {
 
 
     // Reemplaza la img inicial por el contenedor de reportes
-    mostrarReportesCuandoCorresponda("sin-reportes", "con-reportes");
+    //mostrarReportesCuandoCorresponda("sin-reportes", "con-reportes");
 };
 
 
@@ -360,31 +366,14 @@ const listaOperaciones = (operaciones) => {
 //////////////////////// Funcion para ELIMINAR operacion ////////////////////////////////
 
 const eliminarOperacion = (id) => {
+
     const confirmarEliminacion = confirm("¿Estás seguro de que deseas eliminar esta operación?");
 
     if (confirmarEliminacion) {
         operaciones = operaciones.filter((operacion) => operacion.id !== id);
 
-        const totalGanancias = operacionesFiltradas(operaciones, "Ganancia");
-        const totalGastos = operacionesFiltradas(operaciones, "Gasto");
 
-
-        const totalBalance = totalGanancias - totalGastos;
-
-
-        $("#monto-ganancias").innerHTML = `+$${totalGanancias}`;
-        $("#monto-gastos").innerHTML = `-$${totalGastos}`;
-        $("#total-balance").innerHTML = `$${totalBalance}`;
-
-        // actualizar estilo del div balance
-        const signoMonto = totalBalance > 0 ? `+` : totalBalance < 0 ? `-` : ``;
-        $("#total-balance").classList.remove("has-text-success", "has-text-danger");
-
-        if (signoMonto === "+") {
-            $("#total-balance").classList.add("has-text-success");
-        } else if (signoMonto === "-") {
-            $("#total-balance").classList.add("has-text-danger");
-        }
+        actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
 
         actualizarReportes();
         calcularMesConMayorGasto();
@@ -447,7 +436,7 @@ const editarOperacion = (id) => {
 
     //variables que calculan el balance
     const totalGanancias = operacionesFiltradasPorTipo(operacionesActualizadas, "Ganancia");
-    const totalGastos = operacionesFiltradas(operacionesActualizadas, "Gasto");
+    const totalGastos = operacionesFiltradasPorTipo(operacionesActualizadas, "Gasto");
     const totalBalance = totalGanancias - totalGastos;
 
     actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
@@ -479,6 +468,13 @@ const actualizarTotalesEnHTML = (totalGanancias, totalGastos, totalBalance) => {
     $("#monto-ganancias").innerHTML = `+$${totalGanancias}`;
     $("#monto-gastos").innerHTML = `-$${totalGastos}`;
     $("#total-balance").innerHTML = `${signoMonto}$${montoAbsoluto}`;
+
+
+    if (signoMonto === "+") {
+        $("#total-balance").classList.add("has-text-success");
+    } else if (signoMonto === "-") {
+        $("#total-balance").classList.add("has-text-danger");
+    }
 };
 
 ////////////////////////// Funcion para filtrar por tipo ////////////////////////////////
