@@ -367,11 +367,11 @@
                                         <div class="column has-text-weight-medium has-text-left is-8">
                                             Categoría con mayor gasto
                                         </div>
-                                        <div class="column is-1 tag is-info is-light has-text-left p-4"
+                                        <div class="column is-1 tag is-info is-light has-text-left has p-4"
                                             id="categoria-mayor-gasto">
                                         </div>
-                                        <div class="column is-3 has-text-weight-bold has-text-success has-text-right"
-                                            id="categoria-monto-mayor-gasto"> +$0
+                                        <div class="column is-3 has-text-weight-bold has-text-danger has-text-right"
+                                            id="categoria-monto-mayor-gasto">
                                         </div>
                                     </div>
 
@@ -384,7 +384,7 @@
                                         <div class="column is-1 tag is-info is-light has-text-left p-4"
                                             id="categoria-mayor-balance">
                                         </div>
-                                        <div class="column is-3 has-text-weight-bold has-text-success has-text-right"
+                                        <div class="column is-3 has-text-weight-bold has-text-right"
                                             id="categoria-monto-mayor-balance"> +$0
                                         </div>
                                     </div>
@@ -412,7 +412,7 @@
                                         <div class="column is-3 has-text-right" id="mes-mayor-gasto">
                                             27/08/2023
                                         </div>
-                                        <div class="column is-3 has-text-weight-bold has-text-success has-text-right"
+                                        <div class="column is-3 has-text-weight-bold has-text-success has-text-right has-text-danger"
                                             id="mes-monto-mayor-gasto"> +$0
                                         </div>
                                     </div>
@@ -429,24 +429,24 @@
                                         </h3>
                                     </div>
                                     <div class="columns has-text-weight-medium">
-                                        <div class="column has-text-left is-3">Categoría</div>
-                                        <div class="column has-text-right is-3">Ganancias</div>
-                                        <div class="column has-text-right is-3">Gastos</div>
-                                        <div class="column has-text-right is-3">Balance</div>
+                                        <div class="column has-text-centered">Categoría</div>
+                                        <div class="column has-text-centered is-3">Ganancias</div>
+                                        <div class="column has-text-centered is-3">Gastos</div>
+                                        <div class="column has-text-centered is-3">Balance</div>
                                     </div>
                                     <div class="columns has-text-weight-medium pt-1 pb-1">
-                                        <div class="column is-3 has-text-left">Comida</div>
-                                        <div class="column is-3 has-text-right has-text-success">+$0</div>
-                                        <div class="column is-3 has-text-right has-text-danger">-$0</div>
-                                        <div class="column is-3 has-text-right">$0</div>
+                                        <div class="column is-3 has-text-left"></div>
+                                        <div class="column is-3 has-text-left has-text-success"></div>
+                                        <div class="column is-3 has-text-left has-text-danger"></div>
+                                        <div class="column is-3 has-text-left"></div>
                                     </div>
                                 </div>
                             </section>
 
                             <!-- total por mes  -->
 
-                            <section>
-                                <div class="m-5 mt-6 pt-6">
+                            <section id="total-por-mes">
+                                <!-- <div class="m-5 mt-6 pt-6">
                                     <div class="mb-4 pb-4">
                                         <h3 class="is-size-4 has-text-link has-text-weight-medium has-text-centered">
                                             Totales por mes
@@ -464,7 +464,7 @@
                                         <div class="column is-3 has-text-right has-text-danger">-$0</div>
                                         <div class="column is-3 has-text-right">$0</div>
                                     </div>
-                                </div>
+                                </div> -->
                             </section>
                         </div>
                     </div>
@@ -526,8 +526,8 @@
                     </div>
 
                     <div class="buttons mt-6 level-right">
-                        <button class="button is-light" id="btn-cancelar-editar-op">Cancelar</button>
-                        <button class="button is-link" id="btn-editar-op">Editar</button>
+                        <button type="button" class="button is-light" id="btn-cancelar-editar-op">Cancelar</button>
+                        <button type="button" class="button is-link" id="btn-editar-op">Editar</button>
                     </div>
                 </form>
             </div>
