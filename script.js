@@ -249,7 +249,6 @@ const eliminarCategoria = (id) => {
         llenarSelect(categorias);
     }
 };
-//////////agregar funcion de eliminarOperacionPorCategoria y recibe por parametro el id de esa categoria
 
 //////////////////////// funcion CANCELAR OPERACION ////////////////////////////////
 const cancelarNuevaOp = () => {
@@ -346,7 +345,7 @@ const listaOperaciones = (operaciones) => {
         };
 
         $("#items-operaciones").appendChild(liOperacion);
-    };
+};
 
     // Reemplaza la img inicial por la lista de operaciones
     mostrarImgSinOperaciones("img-operaciones", "items-operaciones");
@@ -451,10 +450,7 @@ const editarOperacion = (id) => {
     const totalGastos = operacionesFiltradas(operacionesActualizadas, "Gasto");
     const totalBalance = totalGanancias - totalGastos;
 
-
     actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
-
-
     listaOperaciones(traerDatos().operaciones);
     showVista("seccion-balance");
 };
@@ -735,18 +731,16 @@ const resumenMesGasto = calcularMesConMayorGasto();
 
 
 //////////////////////////////////totales por categoria////////////////////
-const inicializarTotales = (categoriasUnicas) => {
-    const totales = {};
 
-    categoriasUnicas.forEach((categoria) => {
+const inicializarTotales = (categoriasUnicas) => {
+    return categoriasUnicas.reduce((totales, categoria) => {
         totales[categoria] = {
             ganancias: 0,
             gastos: 0,
             balance: 0,
         };
-    });
-
-    return totales;
+        return totales;
+    }, {});
 };
 
 // Función para calcular los totales
@@ -768,33 +762,36 @@ const calcularTotales = (totales, operaciones) => {
     return totales;
 };
 
-// Obtén las categorías únicas de las operaciones
-const categoriasUnicas = [...new Set(operaciones.map((operacion) => operacion.categoria))];
+// Función para generar la fila HTML
+const generarFilaHTML = (categoria, total) => {
+    return `
+        <div class="columns has-text-weight-medium pt-1 pb-1">
+            <div class="column is-3 has-text-centered">${categoria.nombre}</div>
+            <div class="column is-3 has-text-centered has-text-success">+${total.ganancias.toFixed(2)}</div>
+            <div class="column is-3 has-text-centered has-text-danger">-${total.gastos.toFixed(2)}</div>
+            <div class="column is-3 has-text-centered">${total.balance.toFixed(2)}</div>
+        </div>
+    `;
+};
 
-// Inicializa los totales
-const totales = inicializarTotales(categoriasUnicas);
+// Función para procesar y mostrar los totales
+const procesarYMostrarTotales = (operaciones, categorias) => {
+    const categoriasUnicas = [...new Set(operaciones.map((operacion) => operacion.categoria))];
+    const totales = inicializarTotales(categoriasUnicas);
+    const totalesFinales = calcularTotales(totales, operaciones);
 
-// Calcula los totales
-const totalesFinales = calcularTotales(totales, operaciones);
+    categoriasUnicas.forEach((categoriaId) => {
+        const categoria = categorias.find((c) => c.id === categoriaId);
 
-categoriasUnicas.forEach((categoriaId) => {
-    const categoria = categorias.find((c) => c.id === categoriaId);
+        if (categoria) {
+            const total = totales[categoriaId];
+            const filaHTML = generarFilaHTML(categoria, total);
+            $("#total-por-ganancia").innerHTML += filaHTML;
+        }
+    });
+};
 
-    if (categoria) {
-        const total = totales[categoriaId];
-
-        const filaHTML = `
-            <div class="columns has-text-weight-medium pt-1 pb-1">
-                <div class="column is-3 has-text-centered">${categoria.nombre}</div>
-                <div class="column is-3 has-text-centered has-text-success">+${total.ganancias.toFixed(2)}</div>
-                <div class="column is-3 has-text-centered has-text-danger">-${total.gastos.toFixed(2)}</div>
-                <div class="column is-3 has-text-centered">${total.balance.toFixed(2)}</div>
-            </div>
-        `;
-
-        $("#total-por-ganancia").innerHTML += filaHTML;
-    }
-});
+procesarYMostrarTotales(operaciones, categorias);
 
 ///////////////////////////totales por mes////////////////////////////
 
@@ -869,10 +866,9 @@ const mostrarTotalesPorMesEnHTML = () => {
     }
 };
 
-// Llama a la función para mostrar los totales por mes
 mostrarTotalesPorMesEnHTML();
 
-////////////////////funcion para actualizar reporte/////////////////////
+////////////////////funcion para actualizar resumen de reporte/////////////////////
 
 const actualizarReportes = () => {
 
@@ -993,11 +989,8 @@ actualizarReportes();
 
 
 
-
-
-
 /////////////////// FUNCION INICIALIZAR ///////////////////
-/////aca deberian ir todas las que pinten en el HTML
+
 const inicializar = () => {
     llenarSelect(categorias);
     listaCategorias(categorias);
