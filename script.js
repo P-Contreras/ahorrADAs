@@ -144,11 +144,13 @@ const listaCategorias = (categorias) => {
 };
 
 
+
 ////////////////////////// Función para obtener categoria //////////////////////////
 
 const obtenerCategoria = (idCategoria, categorias) => {
     return categorias.find((categoria) => categoria.id === idCategoria);
 };
+
 
 ////////////////////////// Función para AGREGAR categoria //////////////////////////
 const botonAgregarCategoria = $("#btn-agregar-categoria");
@@ -239,16 +241,25 @@ $("#btn-cancelar-edicion").addEventListener("click", cancelarEdicionCategoria);
 
 const eliminarCategoria = (id) => {
     // pide al usuario confirmar que se quiere eliminar
-    const confirmarEliminacion = confirm("¿Estás seguro de que deseas eliminar esta categoría?");
+    const confirmarEliminacion = confirm("¿Estás seguro de que deseas eliminar esta categoría? Todas las operaciones que contengan la categoria eliminada, también se eliminarán");
 
     if (confirmarEliminacion) {
         categorias = categorias.filter((categoria) => categoria.id !== id);
 
-        subirDatos({ categorias });
+        operaciones = filtrarOperacionesPorCategoria(operaciones, id);
+
+        subirDatos({ categorias, operaciones });
         listaCategorias(categorias);
         llenarSelect(categorias);
+        listaOperaciones(operaciones);
     }
 };
+
+
+const filtrarOperacionesPorCategoria = (operaciones, categoriaId) => {
+    return operaciones.filter((operacion) => operacion.categoria !== categoriaId);
+};
+
 
 //////////////////////// funcion CANCELAR OPERACION ////////////////////////////////
 const cancelarNuevaOp = () => {
@@ -314,8 +325,7 @@ const listaOperaciones = (operaciones) => {
         const liOperacion = document.createElement("li");
         liOperacion.classList.add("columns", "is-vcentered");
 
-        const categoriaArr = obtenerCategoria(categoria, categorias);
-        const categoriaNombre = categoriaArr ? categoriaArr.nombre : 'Categoría no encontrada';
+        const categoriaNombre = obtenerCategoria(categoria, categorias).nombre;
 
         const fechaFormateada = new Date(fecha + 'T00:00:00-03:00');
 
@@ -362,7 +372,6 @@ const listaOperaciones = (operaciones) => {
 };
 
 
-
 //////////////////////// Funcion para ELIMINAR operacion ////////////////////////////////
 
 const eliminarOperacion = (id) => {
@@ -372,8 +381,12 @@ const eliminarOperacion = (id) => {
     if (confirmarEliminacion) {
         operaciones = operaciones.filter((operacion) => operacion.id !== id);
 
+        const totalGanancias = operacionesFiltradasPorTipo(operaciones, "Ganancia");
+        const totalGastos = operacionesFiltradasPorTipo(operaciones, "Gasto");
+        const totalBalance = totalGanancias - totalGastos;
 
         actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
+
 
         actualizarReportes();
         calcularMesConMayorGasto();
@@ -383,6 +396,7 @@ const eliminarOperacion = (id) => {
         subirDatos({ operaciones });
     }
 };
+
 
 //////////////////////// Funcion para EDITAR operacion ////////////////////////////////
 
@@ -465,16 +479,17 @@ const actualizarTotalesEnHTML = (totalGanancias, totalGastos, totalBalance) => {
     const signoMonto = totalBalance > 0 ? '+' : totalBalance < 0 ? '-' : '';
     const montoAbsoluto = Math.abs(totalBalance);
 
-    $("#monto-ganancias").innerHTML = `+$${totalGanancias}`;
-    $("#monto-gastos").innerHTML = `-$${totalGastos}`;
-    $("#total-balance").innerHTML = `${signoMonto}$${montoAbsoluto}`;
-
 
     if (signoMonto === "+") {
         $("#total-balance").classList.add("has-text-success");
     } else if (signoMonto === "-") {
         $("#total-balance").classList.add("has-text-danger");
-    }
+    } else {}
+
+
+    $("#monto-ganancias").innerHTML = `+$${totalGanancias}`;
+    $("#monto-gastos").innerHTML = `-$${totalGastos}`;
+    $("#total-balance").innerHTML = `${signoMonto}$${montoAbsoluto}`;
 };
 
 ////////////////////////// Funcion para filtrar por tipo ////////////////////////////////
