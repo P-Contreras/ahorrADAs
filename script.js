@@ -540,30 +540,73 @@ const filtrarPorCategoria = (listaOperaciones, tipoCategoria) => {
 
 $("#filtro-categoria").addEventListener("change", () => aplicarFiltros());
 
-const ordernarPorFecha = (operaciones, orden) => {
+const ordenarPorFecha = (operaciones, orden) => {
     return [...operaciones].sort((a, b) => {
-        const fechaA = new Date(a.fecha);
-        const fechaB = new Date(b.fecha);
-        return orden === "ASC"
-            ? fechaA.getTime() - fechaB.getTime()
-            : fechaB.getTime() - fechaA.getTime();
+    const fechaA = new Date(a.fecha);
+    const fechaB = new Date(b.fecha);
+    return orden === "ASC"
+        ? fechaA.getTime() - fechaB.getTime()
+        : fechaB.getTime() - fechaA.getTime();
+    });
+};
+
+
+const ordenarPorMonto = (operaciones, monto) =>{
+    return [...operaciones].sort((a, b) => {
+    const montoA = a.monto;
+    const montoB = b.monto;
+
+    return monto === "mayor"
+        ? montoB - montoA
+        : montoA - montoB;
+    });
+};
+
+
+const ordenarAZ = (operaciones, descripcion) =>{
+    return [...operaciones].sort((a, b) => {
+    const descripcionA = a.descripcion;
+    const descripcionB = b.descripcion;
+
+    return descripcion === "az"
+        ? descripcionA.localeCompare(descripcionB)
+        : descripcionB.localeCompare(descripcionA);
     });
 };
 
 $("#filtro-orden").addEventListener("change", () => aplicarFiltros());
 
+
+////////////////////////// Funcion para que los filtros se acumulen ////////////////////////////////
+
 const aplicarFiltros = () => {
-    let operacionesFiltradas = [...operaciones];
+    let operacionesFiltradas = [...operaciones]; //No llamar a operaciones (que es la version local), sino a la del ls (traerOperaciones.operaciones)
 
 
     let filtroTipo = $("#filtro-tipo").value;
     let filtroCategoria = $("#filtro-categoria").value;
     let filtroOrden = $("#filtro-orden").value;
 
-
-    operacionesFiltradas = filtrarPorTipo(operacionesFiltradas, filtroTipo);
+    operacionesFiltradas = filtrarPorTipo(operacionesFiltradas, filtroTipo);     
     operacionesFiltradas = filtrarPorCategoria(operacionesFiltradas, filtroCategoria);
-    operacionesFiltradas = ordernarPorFecha(operacionesFiltradas, filtroOrden);
+
+    // Para que el select lea todas las opciones del select de "Ordenar por"
+    switch (filtroOrden) {
+        case "ASC":
+        case "DSC":
+            operacionesFiltradas = ordenarPorFecha(operacionesFiltradas, filtroOrden);
+            break;
+        case "mayor":
+        case "menor":
+            operacionesFiltradas = ordenarPorMonto(operacionesFiltradas, filtroOrden);
+            break;
+        case "az":
+        case "za":
+            operacionesFiltradas = ordenarAZ(operacionesFiltradas, filtroOrden);
+            break;
+        default:
+            break;
+    }
 
     listaOperaciones(operacionesFiltradas);
 };
@@ -1034,6 +1077,7 @@ const inicializar = () => {
     actualizarReportes();
     actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
     mostrarTotalesPorMesEnHTML();
+    aplicarFiltros();
 }
 
 
