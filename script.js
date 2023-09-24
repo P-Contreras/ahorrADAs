@@ -146,7 +146,6 @@ const listaCategorias = (categorias) => {
 };
 
 
-
 ////////////////////////// Función para obtener categoria //////////////////////////
 
 const obtenerCategoria = (idCategoria, categorias) => {
@@ -180,10 +179,12 @@ botonAgregarCategoria.addEventListener("click", () => {
     // llenarSelect(categorias);
 
     
-    inicializar()
+    inicializar();
+    actualizarVistas();
 
     inputNuevaCategoria.value = "";
 });
+
 
 
 ////////////////////////// EDITAR categoria //////////////////////////
@@ -220,10 +221,12 @@ const editarCategoria = () => {
     // listaCategorias(categorias);
     // llenarSelect(categorias);
 
-    inicializar();
+    inicializar();  
 
     $("#seccion-categorias").classList.remove("is-hidden");
     $("#seccion-editar-categorias").classList.add("is-hidden");
+
+    actualizarVistas();
 };
 
 
@@ -264,9 +267,9 @@ const eliminarCategoria = (id) => {
         // listaOperaciones(operaciones);
 
         inicializar();
+        actualizarVistas();
     }
 };
-
 
 
 const filtrarOperacionesPorCategoria = (operaciones, categoriaId) => {
@@ -302,11 +305,12 @@ const nuevaOperacion = () => {
 
 
     subirDatos({ operaciones: [...traerOperaciones(), operacion] });
-
     showVista("seccion-balance");
+    actualizarVistas();
 };
 
 $("#btn-agregar-op").addEventListener("click", nuevaOperacion)
+
 
 
 //////////////////////// Funcion para que la lista de operaciones se vea en el html ////////////////////////////////
@@ -384,7 +388,6 @@ const listaOperaciones = (operaciones) => {
 };
 
 
-
 //////////////////////// Funcion para ELIMINAR operacion ////////////////////////////////
 
 const eliminarOperacion = (id) => {
@@ -394,25 +397,58 @@ const eliminarOperacion = (id) => {
     if (confirmarEliminacion) {
         operaciones = operaciones.filter((operacion) => operacion.id !== id);
 
+        // actualizarReportes();
+        // calcularMesConMayorGasto();
+        // calcularMesConMayorGanancia();
+        // mostrarTotalesPorMesEnHTML();
+        // listaOperaciones(operaciones);
+        // subirDatos({ operaciones });
+        
+        inicializar();
+        actualizarVistas();
+
         const totalGanancias = operacionesFiltradasPorTipo(operaciones, "Ganancia");
         const totalGastos = operacionesFiltradasPorTipo(operaciones, "Gasto");
         const totalBalance = totalGanancias - totalGastos;
-
+    
         actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
-
-
-        actualizarReportes();
-        calcularMesConMayorGasto();
-        calcularMesConMayorGasto();
-        mostrarTotalesPorMesEnHTML();
-        // listaOperaciones(operaciones);
-        // subirDatos({ operaciones });
-
-        inicializar();
     }
 };
 
 
+// //////////////////////// Funcion para guardar la edicion ////////////////////////////////
+
+const editarOperacion = (id) => {
+    const operacionAEditar = obtenerOperacion(id);
+    if (!operacionAEditar) {
+        console.error("La operación no se encontró.");
+        return;
+    }
+
+    operacionAEditar.descripcion = $('#editar-operacion-descripcion').value;
+    operacionAEditar.monto = parseFloat($('#editar-operacion-monto').value);
+    operacionAEditar.tipo = $('#editar-operacion-tipo').value;
+    operacionAEditar.categoria = $('#editar-operacion-categoria').value;
+    operacionAEditar.fecha = $('#editar-operacion-fecha').value;
+
+    const operacionesActualizadas = traerOperaciones().map(operacion => operacion.id === id ? {...operacionAEditar} : operacion);
+
+
+    subirDatos({ operaciones: operacionesActualizadas });
+
+    //variables que calculan el balance
+    const totalGanancias = operacionesFiltradasPorTipo(operacionesActualizadas, "Ganancia");
+    const totalGastos = operacionesFiltradasPorTipo(operacionesActualizadas, "Gasto");
+    const totalBalance = totalGanancias - totalGastos;
+    
+    actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
+
+    listaOperaciones(traerDatos().operaciones);
+
+    showVista("seccion-balance");
+
+    actualizarVistas()
+};
 
 
 //////////////////////// Funcion para EDITAR operacion ////////////////////////////////
@@ -443,37 +479,6 @@ const showEditOperation = (id) => {
 
     // Funcionalidad del boton editar
     $("#btn-editar-op").onclick = () => editarOperacion(id);
-};
-
-
-// //////////////////////// Funcion para guardar la edicion ////////////////////////////////
-
-const editarOperacion = (id) => {
-    const operacionAEditar = obtenerOperacion(id);
-    if (!operacionAEditar) {
-        console.error("La operación no se encontró.");
-        return;
-    }
-
-    operacionAEditar.descripcion = $('#editar-operacion-descripcion').value;
-    operacionAEditar.monto = parseFloat($('#editar-operacion-monto').value);
-    operacionAEditar.tipo = $('#editar-operacion-tipo').value;
-    operacionAEditar.categoria = $('#editar-operacion-categoria').value;
-    operacionAEditar.fecha = $('#editar-operacion-fecha').value;
-
-    const operacionesActualizadas = traerOperaciones().map(operacion => operacion.id === id ? {...operacionAEditar} : operacion);
-
-
-    subirDatos({ operaciones: operacionesActualizadas });
-
-    //variables que calculan el balance
-    const totalGanancias = operacionesFiltradasPorTipo(operacionesActualizadas, "Ganancia");
-    const totalGastos = operacionesFiltradasPorTipo(operacionesActualizadas, "Gasto");
-    const totalBalance = totalGanancias - totalGastos;
-
-    actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
-    listaOperaciones(traerDatos().operaciones);
-    showVista("seccion-balance");
 };
 
 
@@ -508,6 +513,8 @@ const actualizarTotalesEnHTML = (totalGanancias, totalGastos, totalBalance) => {
     $("#monto-ganancias").innerHTML = `+$${totalGanancias}`;
     $("#monto-gastos").innerHTML = `-$${totalGastos}`;
     $("#total-balance").innerHTML = `${signoMonto}$${montoAbsoluto}`;
+
+
 };
 
 
@@ -531,6 +538,7 @@ const filtrarPorCategoria = (listaOperaciones, tipoCategoria) => {
         return listaOperaciones.filter((operacion) => operacion.categoria === tipoCategoria);
     }
 };
+
 
 $("#filtro-categoria").addEventListener("change", () => aplicarFiltros());
 
@@ -815,7 +823,6 @@ const procesarYMostrarTotales = (operaciones, categorias) => {
 procesarYMostrarTotales(operaciones, categorias);
 
 
-
 ///////////////////////////totales por mes////////////////////////////
 
 const calcularTotalesPorMes = () => {
@@ -887,9 +894,15 @@ const mostrarTotalesPorMesEnHTML = () => {
         // Agrega la fila al contenedor
         contenedor.innerHTML += filaHTML;
     }
+
+    //actualizarVistas()
 };
 
 mostrarTotalesPorMesEnHTML();
+
+
+
+
 
 
 ////////////////////funcion para actualizar resumen de reporte/////////////////////
@@ -918,9 +931,11 @@ const actualizarReportes = () => {
 
     $("#mes-mayor-gasto").textContent = resumenMesGasto.mes ? `${resumenMesGasto.mes}/2023` : "N/A";
     $("#mes-monto-mayor-gasto").textContent = `${obtenerSigno("Gasto")}$${resumenGasto.gasto}`;
+
+    //actualizarVistas()
 };
 
-//actualizarReportes();
+actualizarReportes();
 
 
 
@@ -1022,8 +1037,8 @@ const inicializar = () => {
     subirDatos({ categorias });
     subirDatos({ operaciones });
     listaOperaciones(operaciones);
-    // actualizarReportes();
-    // actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
+    actualizarReportes();
+    actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
 }
 
 
@@ -1033,60 +1048,15 @@ window.onload = inicializar();
 // Que llame a las funciones que actualizan el html
 // Se debe llamar cada vez que se modifique algo que se va a mostrar en el html.
 const actualizarVistas = () =>{
-    actualizarReportes();
-    actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
-    llenarSelect(categorias);
-    listaCategorias(categorias);
-    subirDatos({ categorias });
-    listaOperaciones(operaciones);
-    calcularMesConMayorGasto();
-    calcularMesConMayorGasto();
+    llenarSelect(traerDatos().categorias);
+    listaCategorias(traerDatos().categorias);
+    listaOperaciones(traerDatos().operaciones);
     mostrarTotalesPorMesEnHTML();
-
-
-    editarOperacion()
-    eliminarCategoria()
-    nuevaOperacion()
-    eliminarOperacion()
-    aplicarFiltros()
     generarFilaHTML()
     procesarYMostrarTotales(operaciones, categorias);
 }
-
-//traerdatos().operaciones y traerdatos().categorias.
-// Que llame a las funciones que actualizan el html
-// Se debe llamar cada vez que se modifique algo que se va a mostrar en el html.
-    const aactualizarVistas = () =>{
-        actualizarReportes();
-        actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
-        llenarSelect(categorias);
-        listaCategorias(categorias);
-        subirDatos({ categorias });
-        listaOperaciones(operaciones);
-        calcularMesConMayorGasto();
-        calcularMesConMayorGasto();
-        mostrarTotalesPorMesEnHTML();
-    
-        editarOperacion()
-        eliminarCategoria()
-        nuevaOperacion()
-        eliminarOperacion()
-        aplicarFiltros()
-        generarFilaHTML()
-        procesarYMostrarTotales(operaciones, categorias);
-    }
 
 
 // ActualizarVistas: 
     // - Que llame a las funciones que actualizan el html >> Actualizar reportes, lista operaciones, lista categorias, llenar select, balances. 
     // - Aca los parametros deben ser traerdatos().operaciones y traerdatos().categorias. o simplemente datos(a chequear). Se debe llamar cada vez que se modifique algo que se va a mostrar en el html.
-
-
-
-    
-
-
-
-
-
-//[]
