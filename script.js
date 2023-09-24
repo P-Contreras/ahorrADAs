@@ -384,7 +384,7 @@ const listaOperaciones = (operaciones) => {
 
 
     // Reemplaza la img inicial por el contenedor de reportes
-    //mostrarReportesCuandoCorresponda("sin-reportes", "con-reportes");
+    mostrarReportesCuandoCorresponda("sin-reportes", "con-reportes");
 };
 
 
@@ -403,15 +403,15 @@ const eliminarOperacion = (id) => {
         // mostrarTotalesPorMesEnHTML();
         // listaOperaciones(operaciones);
         // subirDatos({ operaciones });
-        
-        inicializar();
-        actualizarVistas();
 
         const totalGanancias = operacionesFiltradasPorTipo(operaciones, "Ganancia");
         const totalGastos = operacionesFiltradasPorTipo(operaciones, "Gasto");
         const totalBalance = totalGanancias - totalGastos;
     
         actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
+        
+        inicializar();
+        actualizarVistas();
     }
 };
 
@@ -447,7 +447,7 @@ const editarOperacion = (id) => {
 
     showVista("seccion-balance");
 
-    actualizarVistas()
+    actualizarVistas();
 };
 
 
@@ -503,18 +503,16 @@ const actualizarTotalesEnHTML = (totalGanancias, totalGastos, totalBalance) => {
     const montoAbsoluto = Math.abs(totalBalance);
 
 
-    if (signoMonto === "+") {
-        $("#total-balance").classList.add("has-text-success");
-    } else if (signoMonto === "-") {
-        $("#total-balance").classList.add("has-text-danger");
-    } else {}
+    // if (signoMonto === "+") {
+    //     $("#total-balance").classList.add("has-text-success");
+    // } else if (signoMonto === "-") {
+    //     $("#total-balance").classList.add("has-text-danger");
+    // } else {}
 
 
     $("#monto-ganancias").innerHTML = `+$${totalGanancias}`;
     $("#monto-gastos").innerHTML = `-$${totalGastos}`;
     $("#total-balance").innerHTML = `${signoMonto}$${montoAbsoluto}`;
-
-
 };
 
 
@@ -807,7 +805,7 @@ const generarFilaHTML = (categoria, total) => {
 const procesarYMostrarTotales = (operaciones, categorias) => {
     const categoriasUnicas = [...new Set(operaciones.map((operacion) => operacion.categoria))];
     const totales = inicializarTotales(categoriasUnicas);
-    const totalesFinales = calcularTotales(totales, operaciones);
+    calcularTotales(totales, operaciones);
 
     categoriasUnicas.forEach((categoriaId) => {
         const categoria = categorias.find((c) => c.id === categoriaId);
@@ -894,8 +892,6 @@ const mostrarTotalesPorMesEnHTML = () => {
         // Agrega la fila al contenedor
         contenedor.innerHTML += filaHTML;
     }
-
-    //actualizarVistas()
 };
 
 mostrarTotalesPorMesEnHTML();
@@ -931,8 +927,6 @@ const actualizarReportes = () => {
 
     $("#mes-mayor-gasto").textContent = resumenMesGasto.mes ? `${resumenMesGasto.mes}/2023` : "N/A";
     $("#mes-monto-mayor-gasto").textContent = `${obtenerSigno("Gasto")}$${resumenGasto.gasto}`;
-
-    //actualizarVistas()
 };
 
 actualizarReportes();
@@ -1039,7 +1033,9 @@ const inicializar = () => {
     listaOperaciones(operaciones);
     actualizarReportes();
     actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
+    mostrarTotalesPorMesEnHTML();
 }
+
 
 
 window.onload = inicializar();
@@ -1054,6 +1050,8 @@ const actualizarVistas = () =>{
     mostrarTotalesPorMesEnHTML();
     generarFilaHTML()
     procesarYMostrarTotales(operaciones, categorias);
+    actualizarReportes();
+    actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
 }
 
 
