@@ -909,7 +909,7 @@ const calcularTotalesPorMes = () => {
 
     operaciones.forEach((operacion) => {
         const { fecha, tipo, monto } = operacion;
-        const fechaObj = new Date(fecha);
+        const fechaObj = new Date(fecha + 'T00:00:00-03:00');
         const mesYAnio = `${fechaObj.getMonth() + 1}/${fechaObj.getFullYear()}`;
 
         if (!totalesPorMes[mesYAnio]) {
