@@ -63,7 +63,7 @@
     <!-- fin BARRA DE NAVEGACION -->
 
     <main>
-        <!--Seccion Balance -->
+        <!--Seccion BALANCE -->
         <section class="container vista" id="seccion-balance">
             <div class="columns is-justify-content-center">
                 <div class="column is-3 mr-3">
@@ -227,7 +227,7 @@
         <!-- fin sección categoria -->
 
 
-        <!-- ---Sección editar categoría---- -->
+        <!-- ---Sección EDITAR CATEGORIAS---- -->
         <section class="mt-5 vista section is-hidden" id="seccion-editar-categorias">
             <div class="container">
                 <div class="columns is-multiline">
@@ -245,7 +245,7 @@
                             <div class="field is-grouped is-justify-content-flex-end">
                                 <div class="buttons mt-5">
                                     <button class="button is-dark" id="btn-cancelar-edicion">Cancelar</button>
-                                    <button class="button is-link" id="btn-guardar-categoria">Agregar</button>
+                                    <button class="button is-link" id="btn-guardar-categoria">Editar</button>
                                 </div>
                             </div>
                         </div>
@@ -256,7 +256,7 @@
         <!-- ----Fin editar sección categoria----- -->
 
 
-        <!-- Seccion Nueva Operacion -->
+        <!-- Seccion NUEVA OPERACION -->
         <section class="container is-flex is-justify-content-center vista is-hidden" id="seccion-nueva-operacion">
             <div class="column box is-8">
                 <h2 class="title is-3 has-text-weight-bold pb-5">Nueva Operación</h2>
@@ -315,7 +315,67 @@
         <!-- ----Fin sección Nueva Operacion----- -->
 
 
-        <!-- sección Reportes -->
+        <!-- Seccion EDITAR OPERACION -->
+        <section class="container is-flex is-justify-content-center vista is-hidden" id="seccion-editar-operacion">
+            <div class="column box is-8">
+                <h2 class="title is-3 has-text-weight-bold pb-5">Editar Operación</h2>
+
+                <form>
+                    <div class="field">
+                        <label class="label">Descripción</label>
+                        <div class="control">
+                            <input class="input" type="text" id="editar-operacion-descripcion">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Monto</label>
+                        <div class="control">
+                            <input class="input" type="number" id="editar-operacion-monto">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Tipo</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select id="editar-operacion-tipo">
+                                    <option>Gasto</option>
+                                    <option>Ganancia</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Categoría</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select class="select-categorias" id="editar-operacion-categoria">
+                                    <option>Todas</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Fecha</label>
+                        <div class="control">
+                            <input class="input is-fullwidth" type="date" id="editar-operacion-fecha">
+                        </div>
+                    </div>
+
+                    <div class="buttons mt-6 level-right">
+                        <button type="button" class="button is-light" id="btn-cancelar-editar-op">Cancelar</button>
+                        <button class="button is-link" id="btn-editar-op">Editar</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <!-- ----Fin sección Editar Operacion----- -->
+
+
+        <!-- Seccion REPORTES -->
         <section class="section mt-5 vista is-hidden" id="seccion-reportes-vacia">
             <div class="container">
                 <div class="columns">
@@ -475,70 +535,7 @@
                 </div>
             </div>
         </section>
-        
         <!-- fin sección Reportes -->
-
-
-        <!-- Seccion Editar Operacion -->
-        <section class="container is-flex is-justify-content-center vista is-hidden" id="seccion-editar-operacion">
-            <div class="column box is-8">
-                <h2 class="title is-3 has-text-weight-bold pb-5">Editar Operación</h2>
-
-                <form>
-                    <div class="field">
-                        <label class="label">Descripción</label>
-                        <div class="control">
-                            <input class="input" type="text" id="editar-operacion-descripcion">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label">Monto</label>
-                        <div class="control">
-                            <input class="input" type="number" id="editar-operacion-monto">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label">Tipo</label>
-                        <div class="control">
-                            <div class="select is-fullwidth">
-                                <select id="editar-operacion-tipo">
-                                    <option>Gasto</option>
-                                    <option>Ganancia</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label">Categoría</label>
-                        <div class="control">
-                            <div class="select is-fullwidth">
-                                <select class="select-categorias" id="editar-operacion-categoria">
-                                    <option>Todas</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label">Fecha</label>
-                        <div class="control">
-                            <input class="input is-fullwidth" type="date" id="editar-operacion-fecha">
-                        </div>
-                    </div>
-
-                    <div class="buttons mt-6 level-right">
-                        <button type="button" class="button is-light" id="btn-cancelar-editar-op">Cancelar</button>
-                        <button class="button is-link" id="btn-editar-op">Editar</button>
-                    </div>
-                </form>
-            </div>
-        </section>
-        <!-- ----Fin sección Editar Operacion----- -->
-
-
     </main>
 
     <script src="script.js"></script>
