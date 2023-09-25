@@ -529,6 +529,10 @@ const filtrarPorTipo = (listaOperaciones, tipoOperacion) => {
 
 $("#filtro-tipo").addEventListener("change", () => aplicarFiltros());
 
+
+
+////////////////////////// Funcion para filtrar por categoria ////////////////////////////////
+
 const filtrarPorCategoria = (listaOperaciones, tipoCategoria) => {
     if (tipoCategoria === "todas") {
         return listaOperaciones;
@@ -539,6 +543,25 @@ const filtrarPorCategoria = (listaOperaciones, tipoCategoria) => {
 
 
 $("#filtro-categoria").addEventListener("change", () => aplicarFiltros());
+
+
+////////////////////////// Funcion para filtrar por fecha ////////////////////////////////
+
+
+$("#filtro-desde").value = new Date().toISOString().split('T')[0];
+
+const filtrarPorFecha = (operaciones, fechaOperacion) =>{
+    let filtrarPorFecha = operaciones.filter((operaciones) => 
+    new Date(operaciones.fecha) >= new Date(fechaOperacion))
+
+    return filtrarPorFecha
+}
+
+$("#filtro-desde").addEventListener("input", () => aplicarFiltros());
+
+
+
+////////////////////////// Funcion para ordenar operaciones ////////////////////////////////
 
 const ordenarPorFecha = (operaciones, orden) => {
     return [...operaciones].sort((a, b) => {
@@ -585,10 +608,17 @@ const aplicarFiltros = () => {
 
     let filtroTipo = $("#filtro-tipo").value;
     let filtroCategoria = $("#filtro-categoria").value;
+
+    let filtroDesde = $("#filtro-desde").value;
+
+
     let filtroOrden = $("#filtro-orden").value;
+    
 
     operacionesFiltradas = filtrarPorTipo(operacionesFiltradas, filtroTipo);     
     operacionesFiltradas = filtrarPorCategoria(operacionesFiltradas, filtroCategoria);
+
+    operacionesFiltradas = filtrarPorFecha(operacionesFiltradas, filtroDesde);
 
     // Para que el select lea todas las opciones del select de "Ordenar por"
     switch (filtroOrden) {
