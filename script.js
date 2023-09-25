@@ -529,6 +529,10 @@ const filtrarPorTipo = (listaOperaciones, tipoOperacion) => {
 
 $("#filtro-tipo").addEventListener("change", () => aplicarFiltros());
 
+
+
+////////////////////////// Funcion para filtrar por categoria ////////////////////////////////
+
 const filtrarPorCategoria = (listaOperaciones, tipoCategoria) => {
     if (tipoCategoria === "todas") {
         return listaOperaciones;
@@ -540,40 +544,116 @@ const filtrarPorCategoria = (listaOperaciones, tipoCategoria) => {
 
 $("#filtro-categoria").addEventListener("change", () => aplicarFiltros());
 
-const ordernarPorFecha = (operaciones, orden) => {
+
+////////////////////////// Funcion para filtrar por fecha ////////////////////////////////
+
+
+// Variable y metodo para que la fecha que figure sea la del primer dia del mes corriente
+const fechaHoy = new Date();
+fechaHoy.setDate(0);
+
+// Fecha formateada para que el input lo pueda leer.
+const primerDiaDelMes = fechaHoy.toISOString().split('T')[0];
+
+
+$("#filtro-desde").value = primerDiaDelMes;
+
+
+const filtrarPorFecha = (operaciones, fechaOperacion) =>{
+    let filtrarPorFecha = operaciones.filter((operaciones) => 
+    new Date(operaciones.fecha) >= new Date(fechaOperacion))
+
+    return filtrarPorFecha
+}
+
+$("#filtro-desde").addEventListener("input", () => aplicarFiltros());
+
+
+////////////////////////// Funcion para ordenar operaciones ////////////////////////////////
+
+const ordenarPorFecha = (operaciones, orden) => {
     return [...operaciones].sort((a, b) => {
-        const fechaA = new Date(a.fecha);
-        const fechaB = new Date(b.fecha);
-        return orden === "ASC"
-            ? fechaA.getTime() - fechaB.getTime()
-            : fechaB.getTime() - fechaA.getTime();
+    const fechaA = new Date(a.fecha);
+    const fechaB = new Date(b.fecha);
+    return orden === "ASC"
+        ? fechaA.getTime() - fechaB.getTime()
+        : fechaB.getTime() - fechaA.getTime();
+    });
+};
+
+
+const ordenarPorMonto = (operaciones, monto) =>{
+    return [...operaciones].sort((a, b) => {
+    const montoA = a.monto;
+    const montoB = b.monto;
+
+    return monto === "mayor"
+        ? montoB - montoA
+        : montoA - montoB;
+    });
+};
+
+
+const ordenarAZ = (operaciones, descripcion) =>{
+    return [...operaciones].sort((a, b) => {
+    const descripcionA = a.descripcion;
+    const descripcionB = b.descripcion;
+
+    return descripcion === "az"
+        ? descripcionA.localeCompare(descripcionB)
+        : descripcionB.localeCompare(descripcionA);
     });
 };
 
 $("#filtro-orden").addEventListener("change", () => aplicarFiltros());
 
-const aplicarFiltros = () => {
-    let operacionesFiltradas = [...operaciones];
 
+////////////////////////// Funcion para que los filtros se acumulen ////////////////////////////////
+
+const aplicarFiltros = () => {
+    let operacionesFiltradas = [...traerOperaciones(), operaciones];
 
     let filtroTipo = $("#filtro-tipo").value;
     let filtroCategoria = $("#filtro-categoria").value;
+
+    let filtroDesde = $("#filtro-desde").value;
+
+
     let filtroOrden = $("#filtro-orden").value;
+    
 
-
-    operacionesFiltradas = filtrarPorTipo(operacionesFiltradas, filtroTipo);
+    operacionesFiltradas = filtrarPorTipo(operacionesFiltradas, filtroTipo);     
     operacionesFiltradas = filtrarPorCategoria(operacionesFiltradas, filtroCategoria);
-    operacionesFiltradas = ordernarPorFecha(operacionesFiltradas, filtroOrden);
+
+    operacionesFiltradas = filtrarPorFecha(operacionesFiltradas, filtroDesde);
+
+    // Para que lea todas las opciones del select de "Ordenar por"
+    switch (filtroOrden) {
+        case "ASC":
+        case "DSC":
+            operacionesFiltradas = ordenarPorFecha(operacionesFiltradas, filtroOrden);
+            break;
+        case "mayor":
+        case "menor":
+            operacionesFiltradas = ordenarPorMonto(operacionesFiltradas, filtroOrden);
+            break;
+        case "az":
+        case "za":
+            operacionesFiltradas = ordenarAZ(operacionesFiltradas, filtroOrden);
+            break;
+        default:
+            break;
+    }
+
+    console.log(operacionesFiltradas);
+
+    const totalGanancias = operacionesFiltradasPorTipo(operacionesFiltradas, "Ganancia");
+    const totalGastos = operacionesFiltradasPorTipo(operacionesFiltradas, "Gasto");
+    const totalBalance = totalGanancias - totalGastos;
+    actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
 
     listaOperaciones(operacionesFiltradas);
 };
-
-
-
-
-
-
-
 
 
 
@@ -1034,6 +1114,7 @@ const inicializar = () => {
     actualizarReportes();
     actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
     mostrarTotalesPorMesEnHTML();
+    aplicarFiltros();
 }
 
 
