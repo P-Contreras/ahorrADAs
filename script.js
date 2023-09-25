@@ -548,7 +548,16 @@ $("#filtro-categoria").addEventListener("change", () => aplicarFiltros());
 ////////////////////////// Funcion para filtrar por fecha ////////////////////////////////
 
 
-$("#filtro-desde").value = new Date().toISOString().split('T')[0];
+// Variable y metodo para que la fecha que figure sea la del primer dia del mes corriente
+const fechaHoy = new Date();
+fechaHoy.setDate(0);
+
+// Fecha formateada para que el input lo pueda leer.
+const primerDiaDelMes = fechaHoy.toISOString().split('T')[0];
+
+
+$("#filtro-desde").value = primerDiaDelMes;
+
 
 const filtrarPorFecha = (operaciones, fechaOperacion) =>{
     let filtrarPorFecha = operaciones.filter((operaciones) => 
@@ -558,7 +567,6 @@ const filtrarPorFecha = (operaciones, fechaOperacion) =>{
 }
 
 $("#filtro-desde").addEventListener("input", () => aplicarFiltros());
-
 
 
 ////////////////////////// Funcion para ordenar operaciones ////////////////////////////////
@@ -603,8 +611,7 @@ $("#filtro-orden").addEventListener("change", () => aplicarFiltros());
 ////////////////////////// Funcion para que los filtros se acumulen ////////////////////////////////
 
 const aplicarFiltros = () => {
-    let operacionesFiltradas = [...operaciones]; //No llamar a operaciones (que es la version local), sino a la del ls (traerOperaciones.operaciones)
-
+    let operacionesFiltradas = [...traerOperaciones(), operaciones];
 
     let filtroTipo = $("#filtro-tipo").value;
     let filtroCategoria = $("#filtro-categoria").value;
@@ -620,7 +627,7 @@ const aplicarFiltros = () => {
 
     operacionesFiltradas = filtrarPorFecha(operacionesFiltradas, filtroDesde);
 
-    // Para que el select lea todas las opciones del select de "Ordenar por"
+    // Para que lea todas las opciones del select de "Ordenar por"
     switch (filtroOrden) {
         case "ASC":
         case "DSC":
@@ -638,15 +645,15 @@ const aplicarFiltros = () => {
             break;
     }
 
+    console.log(operacionesFiltradas);
+
+    const totalGanancias = operacionesFiltradasPorTipo(operacionesFiltradas, "Ganancia");
+    const totalGastos = operacionesFiltradasPorTipo(operacionesFiltradas, "Gasto");
+    const totalBalance = totalGanancias - totalGastos;
+    actualizarTotalesEnHTML(totalGanancias, totalGastos, totalBalance);
+
     listaOperaciones(operacionesFiltradas);
 };
-
-
-
-
-
-
-
 
 
 
